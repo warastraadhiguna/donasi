@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ContactMessage;
 use App\Models\DonationDetail;
 use App\Models\DonationProgram;
 use Illuminate\Http\Request;
@@ -18,6 +19,27 @@ Route::get('/', function () {
             ->get(),
     ]);
 });
+
+Route::post('/kontak', function (Request $request) {
+    $validated = $request->validate([
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name' => ['required', 'string', 'max:255'],
+        'whatsapp' => ['required', 'string', 'max:255'],
+        'message' => ['required', 'string', 'max:5000'],
+    ]);
+
+    ContactMessage::query()->create([
+        'first_name' => $validated['first_name'],
+        'last_name' => $validated['last_name'],
+        'whatsapp' => $validated['whatsapp'],
+        'email' => '',
+        'message' => $validated['message'],
+    ]);
+
+    return redirect('/')
+        ->withFragment('kontak')
+        ->with('contact_submitted', 'Pesan kamu berhasil dikirim. Tim kami akan menindaklanjutinya secepat mungkin.');
+})->name('contact.submit');
 
 Route::get('/donasi', function () {
     $programs = DonationProgram::query()

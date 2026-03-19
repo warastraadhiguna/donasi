@@ -388,6 +388,27 @@
         .contact-info a, .site-footer a { word-break: break-word; }
         .site-footer .logo { max-width: 140px; }
         .site-footer-bottom { background: rgba(0, 0, 0, 0.14); }
+        .contact-form-alert {
+            margin-bottom: 16px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+        }
+        .contact-form-alert.success {
+            background: rgba(84, 191, 208, 0.12);
+            border: 1px solid rgba(84, 191, 208, 0.2);
+            color: #0f766e;
+        }
+        .contact-form-alert.error {
+            background: rgba(234, 0, 79, 0.08);
+            border: 1px solid rgba(234, 0, 79, 0.18);
+            color: #be123c;
+        }
+        .contact-field-error {
+            margin-top: 8px;
+            color: #be123c;
+            font-size: 13px;
+        }
         [data-aos] {
             transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -737,19 +758,47 @@
                     </div>
 
                     <div class="col-lg-5 col-12" data-aos="fade-up" data-aos-delay="120" data-aos-duration="800">
-                        <form class="custom-form contact-form" action="#" method="post" role="form">
+                        <form class="custom-form contact-form" action="{{ route('contact.submit') }}" method="post" role="form">
+                            @csrf
                             <h2>{{ $websiteContent->contact_form_title }}</h2>
-                            <p class="mb-4">{{ str_replace(':email', $hmiProfile->contact_email, $websiteContent->contact_form_description) }}</p>
+                            <p class="mb-4">
+                                @if (filled($hmiProfile->whatsapp_url))
+                                    Untuk kerja sama atau pertanyaan umum, kamu juga bisa hubungi <a href="{{ $hmiProfile->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp kami</a>.
+                                @else
+                                    Untuk kerja sama atau pertanyaan umum, kirim pesan lewat form berikut.
+                                @endif
+                            </p>
+
+                            @if (session('contact_submitted'))
+                                <div class="contact-form-alert success">{{ session('contact_submitted') }}</div>
+                            @endif
+
+                            @if ($errors->has('first_name') || $errors->has('last_name') || $errors->has('whatsapp') || $errors->has('message'))
+                                <div class="contact-form-alert error">Mohon lengkapi data pesan dengan benar sebelum dikirim.</div>
+                            @endif
+
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <input type="text" name="first-name" id="first-name" class="form-control" placeholder="Nama depan" required>
+                                    <input type="text" name="first_name" id="first-name" class="form-control" placeholder="Nama depan" value="{{ old('first_name') }}" required>
+                                    @error('first_name')
+                                        <div class="contact-field-error">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-12">
-                                    <input type="text" name="last-name" id="last-name" class="form-control" placeholder="Nama belakang" required>
+                                    <input type="text" name="last_name" id="last-name" class="form-control" placeholder="Nama belakang" value="{{ old('last_name') }}" required>
+                                    @error('last_name')
+                                        <div class="contact-field-error">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-                            <input type="email" name="email" id="email" pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email" required>
-                            <textarea name="message" rows="5" class="form-control" id="message" placeholder="Tulis kebutuhan atau pesan kamu"></textarea>
+                            <input type="tel" name="whatsapp" id="whatsapp" class="form-control" placeholder="No WhatsApp aktif" value="{{ old('whatsapp') }}" required>
+                            @error('whatsapp')
+                                <div class="contact-field-error">{{ $message }}</div>
+                            @enderror
+                            <textarea name="message" rows="5" class="form-control" id="message" placeholder="Tulis kebutuhan atau pesan kamu">{{ old('message') }}</textarea>
+                            @error('message')
+                                <div class="contact-field-error">{{ $message }}</div>
+                            @enderror
                             <button type="submit" class="form-control">Kirim Pesan</button>
                         </form>
                     </div>
