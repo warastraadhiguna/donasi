@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\HmiProfile;
+use App\Models\WebsiteContent;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('*', function ($view): void {
+            $view->with('hmiProfile', HmiProfile::current());
+            $view->with('websiteContent', WebsiteContent::current());
+        });
     }
 }
