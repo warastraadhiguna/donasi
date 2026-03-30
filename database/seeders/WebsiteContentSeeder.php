@@ -9,9 +9,13 @@ class WebsiteContentSeeder extends Seeder
 {
     public function run(): void
     {
-        WebsiteContent::query()->updateOrCreate(
+        $websiteContent = new WebsiteContent();
+        $defaults = $websiteContent->getAttributes();
+        $defaults['movement_items'] = $websiteContent->movement_items;
+
+        WebsiteContent::query()->firstOrCreate(
             ['id' => 1],
-            (new WebsiteContent())->getAttributes(),
+            $defaults,
         );
     }
 }
