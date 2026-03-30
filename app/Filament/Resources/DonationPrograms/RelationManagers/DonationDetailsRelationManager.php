@@ -107,6 +107,7 @@ class DonationDetailsRelationManager extends RelationManager
                     ->dateTime('d M Y H:i')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('donated_at', 'desc')
             ->headerActions([
                 CreateAction::make()
                     ->mutateDataUsing(function (array $data): array {

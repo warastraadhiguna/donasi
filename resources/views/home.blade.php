@@ -5,8 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="HMI Peduli adalah gerakan charity untuk menghimpun donasi dan relawan bagi pendidikan, pangan, kesehatan, dan aksi kemanusiaan.">
-    <meta name="author" content="HMI Peduli">
-    <title>HMI Peduli | Charity &amp; Donasi</title>
+    <meta name="author" content="{{ $hmiProfile->organization_name }}">
+    <title>{{ $hmiProfile->organization_name }}</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -385,7 +385,61 @@
             padding: 10px;
         }
         .contact-info a, .site-footer a { word-break: break-word; }
-        .site-footer .logo { max-width: 140px; }
+        .site-footer .logo { max-width: 92px; }
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .footer-brand-name {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+        }
+        .footer-contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .footer-contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.92);
+        }
+        .footer-contact-icon {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .footer-contact-label {
+            display: block;
+            margin-bottom: 2px;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .footer-contact-value,
+        .footer-contact-value a {
+            color: #fff;
+            font-size: 15px;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+        .footer-contact-description {
+            margin-top: 18px;
+            color: rgba(255, 255, 255, 0.88);
+            line-height: 1.65;
+        }
         .site-footer-bottom { background: rgba(0, 0, 0, 0.14); }
         .contact-form-alert {
             margin-bottom: 16px;
@@ -470,12 +524,22 @@
                     </p>
                 </div>
                 <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
-                    <ul class="social-icon">
-                        <li class="social-icon-item"><a href="{{ $hmiProfile->instagram_url ?: '#' }}" class="social-icon-link bi-instagram" @if(filled($hmiProfile->instagram_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                        <li class="social-icon-item"><a href="{{ $hmiProfile->facebook_url ?: '#' }}" class="social-icon-link bi-facebook" @if(filled($hmiProfile->facebook_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                        <li class="social-icon-item"><a href="{{ $hmiProfile->youtube_url ?: '#' }}" class="social-icon-link bi-youtube" @if(filled($hmiProfile->youtube_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                        <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_url ?: '#' }}" class="social-icon-link bi-whatsapp" @if(filled($hmiProfile->whatsapp_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                    </ul>
+                    @if (filled($hmiProfile->instagram_url) || filled($hmiProfile->facebook_url) || filled($hmiProfile->youtube_url) || filled($hmiProfile->whatsapp_link))
+                        <ul class="social-icon">
+                            @if (filled($hmiProfile->instagram_url))
+                                <li class="social-icon-item"><a href="{{ $hmiProfile->instagram_url }}" class="social-icon-link bi-instagram" target="_blank" rel="noopener noreferrer"></a></li>
+                            @endif
+                            @if (filled($hmiProfile->facebook_url))
+                                <li class="social-icon-item"><a href="{{ $hmiProfile->facebook_url }}" class="social-icon-link bi-facebook" target="_blank" rel="noopener noreferrer"></a></li>
+                            @endif
+                            @if (filled($hmiProfile->youtube_url))
+                                <li class="social-icon-item"><a href="{{ $hmiProfile->youtube_url }}" class="social-icon-link bi-youtube" target="_blank" rel="noopener noreferrer"></a></li>
+                            @endif
+                            @if (filled($hmiProfile->whatsapp_link))
+                                <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_link }}" class="social-icon-link bi-whatsapp" target="_blank" rel="noopener noreferrer"></a></li>
+                            @endif
+                        </ul>
+                    @endif
                 </div>
             </div>
         </div>
@@ -485,7 +549,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="logo.png" class="logo img-fluid" alt="Logo HMI Peduli">
-                <span>HMI Peduli</span>
+                <span>{{ $hmiProfile->organization_name }}</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -750,6 +814,9 @@
                                 <h5 class="mb-3">Informasi Kontak</h5>
                                 <p class="d-flex mb-2"><i class="bi-geo-alt me-2"></i>{{ $hmiProfile->contact_address }}</p>
                                 <p class="d-flex mb-2"><i class="bi-envelope me-2"></i><a href="mailto:{{ $hmiProfile->contact_email }}">{{ $hmiProfile->contact_email }}</a></p>
+                                @if (filled($hmiProfile->whatsapp_link))
+                                    <p class="d-flex mb-2"><i class="bi-whatsapp me-2"></i><a href="{{ $hmiProfile->whatsapp_link }}" target="_blank" rel="noopener noreferrer">{{ $hmiProfile->whatsapp_display }}</a></p>
+                                @endif
                                 <p class="d-flex"><i class="bi-globe2 me-2"></i>{{ $hmiProfile->contact_support_text }}</p>
                                 <a href="/donasi" class="custom-btn btn mt-3">Buka Halaman Donasi</a>
                             </div>
@@ -761,8 +828,8 @@
                             @csrf
                             <h2>{{ $websiteContent->contact_form_title }}</h2>
                             <p class="mb-4">
-                                @if (filled($hmiProfile->whatsapp_url))
-                                    Untuk kerja sama atau pertanyaan umum, kamu juga bisa hubungi <a href="{{ $hmiProfile->whatsapp_url }}" target="_blank" rel="noopener noreferrer">WhatsApp kami</a>.
+                                @if (filled($hmiProfile->whatsapp_link))
+                                    Untuk kerja sama atau pertanyaan umum, kamu juga bisa hubungi <a href="{{ $hmiProfile->whatsapp_link }}" target="_blank" rel="noopener noreferrer">{{ $hmiProfile->whatsapp_url }}</a>.
                                 @else
                                     Untuk kerja sama atau pertanyaan umum, kirim pesan lewat form berikut.
                                 @endif
@@ -810,7 +877,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-12 mb-4">
-                    <img src="logo.png" class="logo img-fluid" alt="Logo HMI Peduli">
+                    <div class="footer-brand">
+                        <img src="logo.png" class="logo img-fluid" alt="Logo {{ $hmiProfile->organization_name }}">
+                        <div class="footer-brand-name">{{ $hmiProfile->organization_name }}</div>
+                    </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <h5 class="site-footer-title mb-3">Navigasi Cepat</h5>
@@ -824,14 +894,29 @@
                 </div>
                 <div class="col-lg-4 col-md-6 col-12 mx-auto">
                     <h5 class="site-footer-title mb-3">Kontak</h5>
-                    <p class="text-white d-flex">
-                        <i class="bi-envelope me-2"></i>
-                        <a href="mailto:{{ $hmiProfile->contact_email }}" class="site-footer-link">{{ $hmiProfile->contact_email }}</a>
-                    </p>
-                    <p class="text-white d-flex mt-3">
-                        <i class="bi-heart-pulse me-2"></i>
-                        {{ $hmiProfile->footer_description }}
-                    </p>
+                    <div class="footer-contact-list">
+                        <div class="footer-contact-item">
+                            <div class="footer-contact-icon"><i class="bi-envelope"></i></div>
+                            <div class="footer-contact-copy">
+                                <span class="footer-contact-label">Email</span>
+                                <div class="footer-contact-value">
+                                    <a href="mailto:{{ $hmiProfile->contact_email }}" class="site-footer-link">{{ $hmiProfile->contact_email }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        @if (filled($hmiProfile->whatsapp_link))
+                            <div class="footer-contact-item">
+                                <div class="footer-contact-icon"><i class="bi-whatsapp"></i></div>
+                                <div class="footer-contact-copy">
+                                    <span class="footer-contact-label">WhatsApp</span>
+                                    <div class="footer-contact-value">
+                                        <a href="{{ $hmiProfile->whatsapp_link }}" class="site-footer-link" target="_blank" rel="noopener noreferrer">{{ $hmiProfile->whatsapp_display }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                    <p class="footer-contact-description">{{ $hmiProfile->footer_description }}</p>
                     <a href="/donasi" class="custom-btn btn mt-3">Donasi Sekarang</a>
                 </div>
             </div>
@@ -844,12 +929,22 @@
                         <p class="copyright-text mb-0">Copyright &copy; 2026 <a href="/">HMI Peduli</a>. Semua hak cipta dilindungi.</p>
                     </div>
                     <div class="col-lg-6 col-md-5 col-12 d-flex justify-content-center align-items-center mx-auto">
-                        <ul class="social-icon">
-                            <li class="social-icon-item"><a href="{{ $hmiProfile->instagram_url ?: '#' }}" class="social-icon-link bi-instagram" @if(filled($hmiProfile->instagram_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                            <li class="social-icon-item"><a href="{{ $hmiProfile->facebook_url ?: '#' }}" class="social-icon-link bi-facebook" @if(filled($hmiProfile->facebook_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                            <li class="social-icon-item"><a href="{{ $hmiProfile->youtube_url ?: '#' }}" class="social-icon-link bi-youtube" @if(filled($hmiProfile->youtube_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                            <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_url ?: '#' }}" class="social-icon-link bi-whatsapp" @if(filled($hmiProfile->whatsapp_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                        </ul>
+                        @if (filled($hmiProfile->instagram_url) || filled($hmiProfile->facebook_url) || filled($hmiProfile->youtube_url) || filled($hmiProfile->whatsapp_link))
+                            <ul class="social-icon">
+                                @if (filled($hmiProfile->instagram_url))
+                                    <li class="social-icon-item"><a href="{{ $hmiProfile->instagram_url }}" class="social-icon-link bi-instagram" target="_blank" rel="noopener noreferrer"></a></li>
+                                @endif
+                                @if (filled($hmiProfile->facebook_url))
+                                    <li class="social-icon-item"><a href="{{ $hmiProfile->facebook_url }}" class="social-icon-link bi-facebook" target="_blank" rel="noopener noreferrer"></a></li>
+                                @endif
+                                @if (filled($hmiProfile->youtube_url))
+                                    <li class="social-icon-item"><a href="{{ $hmiProfile->youtube_url }}" class="social-icon-link bi-youtube" target="_blank" rel="noopener noreferrer"></a></li>
+                                @endif
+                                @if (filled($hmiProfile->whatsapp_link))
+                                    <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_link }}" class="social-icon-link bi-whatsapp" target="_blank" rel="noopener noreferrer"></a></li>
+                                @endif
+                            </ul>
+                        @endif
                     </div>
                 </div>
             </div>

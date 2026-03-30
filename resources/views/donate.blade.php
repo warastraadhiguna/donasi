@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="description" content="Halaman donasi HMI Peduli untuk mendukung program pendidikan, pangan, kesehatan, dan aksi kemanusiaan.">
-    <meta name="author" content="HMI Peduli">
+    <meta name="author" content="{{ $hmiProfile->organization_name }}">
 
-    <title>HMI Peduli | Halaman Donasi</title>
+    <title>{{ $hmiProfile->organization_name }} | Halaman Donasi</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -56,7 +56,21 @@
         }
 
         .site-footer .logo {
-            max-width: 140px;
+            max-width: 92px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .footer-brand-name {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
         }
 
         .custom-select-wrap {
@@ -140,6 +154,251 @@
             color: #fff;
             border: 1px solid var(--secondary-color);
             border-right: 0;
+        }
+
+        .program-preview-card {
+            margin-top: 18px;
+            padding: 20px;
+            border-radius: 22px;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px rgba(220, 232, 236, 0.92), 0 14px 30px rgba(15, 23, 32, 0.05);
+        }
+
+        .program-preview-card.is-empty {
+            display: grid;
+            place-items: center;
+            min-height: 240px;
+            text-align: center;
+            color: var(--p-color);
+        }
+
+        .program-preview-card.is-empty .program-preview-content {
+            display: none;
+        }
+
+        .program-preview-card:not(.is-empty) .program-preview-placeholder {
+            display: none;
+        }
+
+        .program-preview-title {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 28px;
+            line-height: 1.15;
+        }
+
+        .program-preview-summary {
+            margin-bottom: 18px;
+            color: var(--p-color);
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        .program-preview-progress {
+            margin-bottom: 18px;
+        }
+
+        .program-preview-progress-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+
+        .program-preview-progress-bar {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(220, 232, 236, 0.9);
+            overflow: hidden;
+        }
+
+        .program-preview-progress-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, rgba(234, 0, 79, 0.9), rgba(84, 191, 208, 0.9));
+            transition: width 0.2s ease;
+        }
+
+        .program-preview-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px 18px;
+        }
+
+        .program-preview-stat {
+            min-width: 0;
+        }
+
+        .program-preview-stat-label {
+            display: block;
+            margin-bottom: 2px;
+            color: var(--p-color);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .program-preview-stat-value {
+            color: var(--dark-color);
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        .program-preview-placeholder i {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--secondary-color);
+            font-size: 36px;
+        }
+
+        .program-preview-placeholder strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--dark-color);
+        }
+
+        .amount-choice-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .amount-choice-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            min-width: 0;
+            padding: 18px;
+            border: 1px solid rgba(220, 232, 236, 0.92);
+            border-radius: 18px;
+            background: #fff;
+            color: var(--dark-color);
+            text-align: left;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+            box-shadow: 0 10px 22px rgba(15, 23, 32, 0.06);
+        }
+
+        .amount-choice-btn:hover,
+        .amount-choice-btn:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(84, 191, 208, 0.7);
+            box-shadow: 0 16px 30px rgba(84, 191, 208, 0.14);
+            outline: none;
+        }
+
+        .amount-choice-btn.is-active {
+            border-color: rgba(234, 0, 79, 0.18);
+            background: linear-gradient(135deg, rgba(234, 0, 79, 0.08), rgba(84, 191, 208, 0.12));
+            box-shadow: 0 16px 28px rgba(18, 63, 74, 0.12);
+        }
+
+        .amount-choice-mark {
+            flex-shrink: 0;
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            background: rgba(84, 191, 208, 0.14);
+            color: var(--secondary-color);
+            font-size: 18px;
+        }
+
+        .amount-choice-copy {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .amount-choice-value {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+        }
+
+        .amount-choice-check {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            border: 1px solid rgba(220, 232, 236, 0.92);
+            color: transparent;
+            background: #fff;
+            transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+        }
+
+        .amount-choice-btn.is-active .amount-choice-mark {
+            background: rgba(234, 0, 79, 0.12);
+            color: var(--primary-color);
+        }
+
+        .amount-choice-btn.is-active .amount-choice-check {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: #fff;
+        }
+
+        .amount-input-shell {
+            padding: 14px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(246, 252, 253, 0.98), rgba(255, 255, 255, 1));
+            box-shadow: inset 0 0 0 1px rgba(220, 232, 236, 0.92);
+        }
+
+        .amount-input-label {
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--p-color);
+        }
+
+        .amount-input-shell .input-group {
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 14px 28px rgba(15, 23, 32, 0.07);
+        }
+
+        .amount-input-shell .input-group-text {
+            min-width: 64px;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .amount-input-shell .form-control {
+            min-height: 74px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            padding-inline: 20px;
+        }
+
+        .amount-input-shell .form-control::placeholder {
+            color: #aab4bc;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: normal;
+        }
+
+        .amount-helper-text {
+            margin-top: 12px;
+            margin-bottom: 0;
+            color: var(--p-color);
+            font-size: 13px;
         }
 
         .payment-detail-card {
@@ -303,6 +562,43 @@
                 padding: 28px 20px;
             }
         }
+
+        @media screen and (max-width: 575px) {
+            .program-preview-card {
+                padding: 18px;
+            }
+
+            .program-preview-title {
+                font-size: 24px;
+            }
+
+            .program-preview-stats {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .amount-choice-btn {
+                padding: 14px;
+            }
+
+            .amount-choice-value {
+                font-size: 20px;
+            }
+
+            .amount-choice-mark {
+                width: 40px;
+                height: 40px;
+            }
+
+            .amount-input-shell .input-group-text {
+                min-width: 58px;
+                font-size: 22px;
+            }
+
+            .amount-input-shell .form-control {
+                min-height: 68px;
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 
@@ -327,7 +623,7 @@
                         <li class="social-icon-item"><a href="{{ $hmiProfile->facebook_url ?: '#' }}" class="social-icon-link bi-facebook" @if(filled($hmiProfile->facebook_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
                         <li class="social-icon-item"><a href="{{ $hmiProfile->instagram_url ?: '#' }}" class="social-icon-link bi-instagram" @if(filled($hmiProfile->instagram_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
                         <li class="social-icon-item"><a href="{{ $hmiProfile->youtube_url ?: '#' }}" class="social-icon-link bi-youtube" @if(filled($hmiProfile->youtube_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                        <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_url ?: '#' }}" class="social-icon-link bi-whatsapp" @if(filled($hmiProfile->whatsapp_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
+                        <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_link ?: '#' }}" class="social-icon-link bi-whatsapp" @if(filled($hmiProfile->whatsapp_link)) target="_blank" rel="noopener noreferrer" @endif></a></li>
                     </ul>
                 </div>
             </div>
@@ -338,7 +634,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="/logo.png" class="logo img-fluid" alt="Logo HMI Peduli">
-                <span>HMI Peduli</span>
+                <span>{{ $hmiProfile->organization_name }}</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -365,6 +661,22 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-11 col-12">
+                        @php
+                            $programPreviewData = $programs->mapWithKeys(function ($program) {
+                                return [
+                                    $program->slug => [
+                                        'title' => $program->title,
+                                        'summary' => $program->summary,
+                                        'progress_label' => $program->progress_label,
+                                        'progress_percentage' => $program->progress_percentage,
+                                        'status' => $program->status,
+                                        'received_amount' => $program->formatted_received_amount,
+                                        'target_amount' => $program->formatted_target_amount,
+                                        'remaining_days_label' => $program->remaining_days_label,
+                                    ],
+                                ];
+                            })->all();
+                        @endphp
                         <div class="donation-form-shell">
                         @if (session('donation_submitted'))
                             <div class="donation-alert donation-alert-success">
@@ -399,16 +711,100 @@
                                         @error('program')
                                             <div class="field-error">{{ $message }}</div>
                                         @enderror
+
+                                        <div id="program-preview" class="program-preview-card is-empty">
+                                            <div class="program-preview-content">
+                                                <h4 class="program-preview-title js-program-title"></h4>
+                                                <p class="program-preview-summary js-program-summary"></p>
+
+                                                <div class="program-preview-progress">
+                                                    <div class="program-preview-progress-top">
+                                                        <span class="js-program-progress-label"></span>
+                                                        <span class="js-program-status"></span>
+                                                    </div>
+                                                    <div class="program-preview-progress-bar">
+                                                        <div class="program-preview-progress-fill js-program-progress-fill"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="program-preview-stats">
+                                                    <div class="program-preview-stat">
+                                                        <span class="program-preview-stat-label">Terkumpul</span>
+                                                        <span class="program-preview-stat-value js-program-received"></span>
+                                                    </div>
+                                                    <div class="program-preview-stat">
+                                                        <span class="program-preview-stat-label">Target</span>
+                                                        <span class="program-preview-stat-value js-program-target"></span>
+                                                    </div>
+                                                    <div class="program-preview-stat">
+                                                        <span class="program-preview-stat-label">Status</span>
+                                                        <span class="program-preview-stat-value js-program-status-detail"></span>
+                                                    </div>
+                                                    <div class="program-preview-stat">
+                                                        <span class="program-preview-stat-label">Sisa Hari</span>
+                                                        <span class="program-preview-stat-value js-program-days"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="program-preview-placeholder">
+                                                <i class="bi bi-card-text"></i>
+                                                <strong>Pilih ruang donasi</strong>
+                                                <span>Ringkasan program akan muncul di sini.</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-6 col-12">
                                     <div class="donation-section-card">
                                         <h5>Nominal Donasi</h5>
-                                        <div class="input-group mb-0">
-                                            <span class="input-group-text" id="basic-addon1">Rp</span>
-                                            <input type="text" class="form-control" name="amount" id="donation-amount" value="{{ old('amount') }}" placeholder="Tuliskan jumlah nominal"
-                                                aria-label="Nominal donasi" aria-describedby="basic-addon1">
+                                        <div class="amount-choice-grid" role="group" aria-label="Pilih nominal donasi cepat">
+                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="5000">
+                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                <span class="amount-choice-copy">
+                                                    <span class="amount-choice-value">Rp5.000</span>
+                                                </span>
+                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                            </button>
+                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="10000">
+                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                <span class="amount-choice-copy">
+                                                    <span class="amount-choice-value">Rp10.000</span>
+                                                </span>
+                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                            </button>
+                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="25000">
+                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                <span class="amount-choice-copy">
+                                                    <span class="amount-choice-value">Rp25.000</span>
+                                                </span>
+                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                            </button>
+                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="50000">
+                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                <span class="amount-choice-copy">
+                                                    <span class="amount-choice-value">Rp50.000</span>
+                                                </span>
+                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                            </button>
+                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="100000">
+                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                <span class="amount-choice-copy">
+                                                    <span class="amount-choice-value">Rp100.000</span>
+                                                </span>
+                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="amount-input-shell">
+                                            <p class="amount-input-label">Atau isi nominal sendiri</p>
+                                            <div class="input-group mb-0">
+                                                <span class="input-group-text" id="basic-addon1">Rp</span>
+                                                <input type="text" class="form-control" name="amount" id="donation-amount" value="{{ old('amount') }}" placeholder="Tuliskan jumlah nominal"
+                                                    inputmode="numeric" autocomplete="off" aria-label="Nominal donasi" aria-describedby="basic-addon1">
+                                            </div>
+                                            <p class="amount-helper-text">Klik nominal cepat di atas atau tuliskan jumlah donasi sesuai kebutuhan.</p>
                                         </div>
                                         @error('amount')
                                             <div class="field-error">{{ $message }}</div>
@@ -515,7 +911,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-12 mb-4">
-                    <img src="/logo.png" class="logo img-fluid" alt="Logo HMI Peduli">
+                    <div class="footer-brand">
+                        <img src="/logo.png" class="logo img-fluid" alt="Logo {{ $hmiProfile->organization_name }}">
+                        <div class="footer-brand-name">{{ $hmiProfile->organization_name }}</div>
+                    </div>
                 </div>
 
                 <div class="col-lg-4 col-md-6 col-12 mb-4">
@@ -560,7 +959,7 @@
                             <li class="social-icon-item"><a href="{{ $hmiProfile->facebook_url ?: '#' }}" class="social-icon-link bi-facebook" @if(filled($hmiProfile->facebook_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
                             <li class="social-icon-item"><a href="{{ $hmiProfile->instagram_url ?: '#' }}" class="social-icon-link bi-instagram" @if(filled($hmiProfile->instagram_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
                             <li class="social-icon-item"><a href="{{ $hmiProfile->youtube_url ?: '#' }}" class="social-icon-link bi-youtube" @if(filled($hmiProfile->youtube_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
-                            <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_url ?: '#' }}" class="social-icon-link bi-whatsapp" @if(filled($hmiProfile->whatsapp_url)) target="_blank" rel="noopener noreferrer" @endif></a></li>
+                            <li class="social-icon-item"><a href="{{ $hmiProfile->whatsapp_link ?: '#' }}" class="social-icon-link bi-whatsapp" @if(filled($hmiProfile->whatsapp_link)) target="_blank" rel="noopener noreferrer" @endif></a></li>
                         </ul>
                     </div>
                 </div>
@@ -580,6 +979,69 @@
             const proofInput = document.getElementById('payment-proof');
             const proofBox = document.querySelector('.proof-upload-box');
             const proofText = document.querySelector('.js-proof-text');
+            const amountInput = document.getElementById('donation-amount');
+            const amountPresets = document.querySelectorAll('.js-amount-preset');
+            const donationProgramSelect = document.getElementById('donation-program');
+            const programPreview = document.getElementById('program-preview');
+            const programPreviewData = @json($programPreviewData);
+
+            const formatAmount = function (value) {
+                const digits = String(value || '').replace(/\D+/g, '');
+
+                if (!digits) {
+                    return '';
+                }
+
+                return Number(digits).toLocaleString('id-ID');
+            };
+
+            const getAmountDigits = function () {
+                return amountInput ? amountInput.value.replace(/\D+/g, '') : '';
+            };
+
+            const syncAmountPresets = function () {
+                const selectedAmount = getAmountDigits();
+
+                amountPresets.forEach(function (button) {
+                    const isActive = button.dataset.amountValue === selectedAmount;
+                    button.classList.toggle('is-active', isActive);
+                    button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+            };
+
+            const renderProgramPreview = function (selectedSlug) {
+                if (!programPreview) {
+                    return;
+                }
+
+                const data = selectedSlug ? programPreviewData[selectedSlug] : null;
+
+                programPreview.classList.toggle('is-empty', !data);
+
+                if (!data) {
+                    return;
+                }
+
+                const title = programPreview.querySelector('.js-program-title');
+                const summary = programPreview.querySelector('.js-program-summary');
+                const progressLabel = programPreview.querySelector('.js-program-progress-label');
+                const status = programPreview.querySelector('.js-program-status');
+                const statusDetail = programPreview.querySelector('.js-program-status-detail');
+                const received = programPreview.querySelector('.js-program-received');
+                const target = programPreview.querySelector('.js-program-target');
+                const days = programPreview.querySelector('.js-program-days');
+                const progressFill = programPreview.querySelector('.js-program-progress-fill');
+
+                title.textContent = data.title || '';
+                summary.textContent = data.summary || '';
+                progressLabel.textContent = 'Tercapai: ' + (data.progress_label || '0%');
+                status.textContent = 'Status: ' + (data.status || '-');
+                statusDetail.textContent = data.status || '-';
+                received.textContent = data.received_amount || '-';
+                target.textContent = data.target_amount || '-';
+                days.textContent = data.remaining_days_label || '-';
+                progressFill.style.width = Math.max(0, Math.min(100, Number(data.progress_percentage || 0))) + '%';
+            };
 
             const togglePaymentDetail = function (selectedValue) {
                 paymentDetails.forEach(function (detail) {
@@ -604,8 +1066,36 @@
                     proofText.textContent = fileName || 'Pilih file gambar atau PDF sebagai bukti pembayaran.';
                 });
             }
+
+            if (donationProgramSelect) {
+                donationProgramSelect.addEventListener('change', function () {
+                    renderProgramPreview(this.value);
+                });
+
+                renderProgramPreview(donationProgramSelect.value);
+            }
+
+            if (amountInput) {
+                amountInput.value = formatAmount(amountInput.value);
+
+                amountInput.addEventListener('input', function () {
+                    this.value = formatAmount(this.value);
+                    syncAmountPresets();
+                });
+
+                amountPresets.forEach(function (button) {
+                    button.addEventListener('click', function () {
+                        amountInput.value = formatAmount(this.dataset.amountValue);
+                        syncAmountPresets();
+                        amountInput.focus();
+                    });
+                });
+
+                syncAmountPresets();
+            }
         });
     </script>
 </body>
 
 </html>
+

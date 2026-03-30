@@ -48,9 +48,9 @@ class HmiProfileForm
                                             ->email()
                                             ->required(),
                                         TextInput::make('whatsapp_url')
-                                            ->label('Link WhatsApp')
-                                            ->url()
-                                            ->helperText('Contoh: https://wa.me/62812xxxx'),
+                                            ->label('Nomor WhatsApp')
+                                            ->tel()
+                                            ->helperText('Isi nomor saja. Sistem otomatis membuat link wa.me, contoh: 0855234789457'),
                                         TextInput::make('instagram_url')
                                             ->label('Link Instagram')
                                             ->url(),

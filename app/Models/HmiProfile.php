@@ -56,6 +56,52 @@ class HmiProfile extends Model
         return $this->resolveMediaUrl($this->qris_image);
     }
 
+    public function getWhatsappUrlAttribute(?string $value): string
+    {
+        return $this->extractWhatsappNumber($value);
+    }
+
+    public function setWhatsappUrlAttribute(?string $value): void
+    {
+        $this->attributes['whatsapp_url'] = $this->extractWhatsappNumber($value);
+    }
+
+    public function getWhatsappLinkAttribute(): string
+    {
+        $number = $this->normalizeWhatsappNumberForLink($this->attributes['whatsapp_url'] ?? null);
+
+        if (blank($number)) {
+            return '';
+        }
+
+        return 'https://wa.me/' . $number;
+    }
+
+    public function getWhatsappDisplayAttribute(): string
+    {
+        $number = $this->extractWhatsappNumber($this->attributes['whatsapp_url'] ?? null);
+
+        if (blank($number)) {
+            return '';
+        }
+
+        if (str_starts_with($number, '62')) {
+            $rest = substr($number, 2);
+
+            return trim('+62 ' . implode(' ', array_filter([
+                substr($rest, 0, 3) ?: null,
+                substr($rest, 3, 4) ?: null,
+                substr($rest, 7) ?: null,
+            ])));
+        }
+
+        return implode(' ', array_filter([
+            substr($number, 0, 4) ?: null,
+            substr($number, 4, 4) ?: null,
+            substr($number, 8) ?: null,
+        ]));
+    }
+
     public static function current(): self
     {
         if (static::$current instanceof self) {
@@ -89,5 +135,59 @@ class HmiProfile extends Model
         }
 
         return Storage::disk('public')->url($trimmedPath);
+    }
+
+    protected function extractWhatsappNumber(?string $value): string
+    {
+        if (blank($value)) {
+            return '';
+        }
+
+        $value = trim((string) $value);
+
+        if (filter_var($value, FILTER_VALIDATE_URL) || str_contains($value, 'wa.me') || str_contains($value, 'whatsapp.com')) {
+            $parsedUrl = parse_url($value);
+
+            if (filled($parsedUrl['query'] ?? null)) {
+                parse_str((string) $parsedUrl['query'], $query);
+
+                if (filled($query['phone'] ?? null)) {
+                    return preg_replace('/\D+/', '', (string) $query['phone']) ?: '';
+                }
+            }
+
+            if (filled($parsedUrl['path'] ?? null)) {
+                $pathDigits = preg_replace('/\D+/', '', (string) $parsedUrl['path']);
+
+                if (filled($pathDigits)) {
+                    return $pathDigits;
+                }
+            }
+        }
+
+        return preg_replace('/\D+/', '', $value) ?: '';
+    }
+
+    protected function normalizeWhatsappNumberForLink(?string $value): string
+    {
+        $number = $this->extractWhatsappNumber($value);
+
+        if (blank($number)) {
+            return '';
+        }
+
+        if (str_starts_with($number, '0')) {
+            return '62' . substr($number, 1);
+        }
+
+        if (str_starts_with($number, '62')) {
+            return $number;
+        }
+
+        if (str_starts_with($number, '8')) {
+            return '62' . $number;
+        }
+
+        return $number;
     }
 }
