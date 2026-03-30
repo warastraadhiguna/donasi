@@ -388,8 +388,13 @@
         .site-footer .logo { max-width: 92px; }
         .footer-brand {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 16px;
+        }
+        .footer-brand-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         .footer-brand-name {
             color: #fff;
@@ -397,6 +402,13 @@
             font-weight: 700;
             letter-spacing: -0.04em;
             line-height: 1.1;
+        }
+        .footer-brand-tagline {
+            max-width: 280px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.74);
+            font-size: 13px;
+            line-height: 1.65;
         }
         .footer-contact-list {
             display: flex;
@@ -514,10 +526,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-12 d-flex flex-wrap">
-                    <p class="d-flex me-4 mb-0">
-                        <i class="bi-heart-pulse me-2"></i>
-                        {{ $hmiProfile->header_tagline }}
-                    </p>
                     <p class="d-flex mb-0">
                         <i class="bi-envelope me-2"></i>
                         <a href="mailto:{{ $hmiProfile->contact_email }}">{{ $hmiProfile->contact_email }}</a>
@@ -854,7 +862,12 @@
                 <div class="col-lg-3 col-12 mb-4">
                     <div class="footer-brand">
                         <img src="logo.png" class="logo img-fluid" alt="Logo {{ $hmiProfile->organization_name }}">
-                        <div class="footer-brand-name">{{ $hmiProfile->organization_name }}</div>
+                        <div class="footer-brand-copy">
+                            <div class="footer-brand-name">{{ $hmiProfile->organization_name }}</div>
+                            @if (filled($hmiProfile->header_tagline))
+                                <p class="footer-brand-tagline">{{ $hmiProfile->header_tagline }}</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-12 mb-4">
