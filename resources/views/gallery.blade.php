@@ -51,14 +51,6 @@
             letter-spacing: -0.8px;
         }
 
-        .navbar-brand small {
-            color: var(--primary-color);
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-
         .gallery-hero {
             padding: 118px 0 56px;
             background:
@@ -321,10 +313,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="/logo.png" class="logo img-fluid" alt="Logo HMI Peduli">
-                <span>
-                    HMI Peduli
-                    <small>Charity &amp; Donasi</small>
-                </span>
+                <span>HMI Peduli</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"

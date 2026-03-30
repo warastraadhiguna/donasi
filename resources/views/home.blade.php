@@ -33,7 +33,6 @@
         .site-header p, .site-header a, .site-header .social-icon-link { color: rgba(255, 255, 255, 0.92); }
         .navbar-brand .logo { width: 74px; height: auto; margin-right: 14px; }
         .navbar-brand span { color: var(--dark-color); font-weight: 700; letter-spacing: -0.8px; }
-        .navbar-brand small { color: var(--primary-color); font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
         .brand-hero {
             min-height: 92vh;
             padding: 160px 0 110px;
@@ -486,7 +485,7 @@
         <div class="container">
             <a class="navbar-brand" href="/">
                 <img src="logo.png" class="logo img-fluid" alt="Logo HMI Peduli">
-                <span>HMI Peduli<small>Charity &amp; Donasi</small></span>
+                <span>HMI Peduli</span>
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
