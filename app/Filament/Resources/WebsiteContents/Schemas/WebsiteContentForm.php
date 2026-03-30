@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\WebsiteContents\Schemas;
 
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Components\Section;
@@ -12,6 +14,16 @@ use Filament\Schemas\Schema;
 
 class WebsiteContentForm
 {
+    protected static function movementIconOptions(): array
+    {
+        return [
+            'images/icons/hands.png' => 'Hands / Relawan',
+            'images/icons/heart.png' => 'Heart / Program Sosial',
+            'images/icons/receive.png' => 'Receive / Donasi',
+            'images/icons/scholarship.png' => 'Scholarship / Kolaborasi',
+        ];
+    }
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -47,22 +59,6 @@ class WebsiteContentForm
                                     ])
                                     ->columns(2),
                             ]),
-                        Tab::make('Fokus Donasi')
-                            ->schema([
-                                Section::make()
-                                    ->schema([
-                                        TextInput::make('hero_focus_title')->label('Judul Fokus Donasi')->required()->columnSpanFull(),
-                                        TextInput::make('hero_focus_1_label')->label('Fokus 1')->required(),
-                                        TextInput::make('hero_focus_1_value')->label('Persentase 1')->required(),
-                                        TextInput::make('hero_focus_2_label')->label('Fokus 2')->required(),
-                                        TextInput::make('hero_focus_2_value')->label('Persentase 2')->required(),
-                                        TextInput::make('hero_focus_3_label')->label('Fokus 3')->required(),
-                                        TextInput::make('hero_focus_3_value')->label('Persentase 3')->required(),
-                                        TextInput::make('hero_focus_4_label')->label('Fokus 4')->required(),
-                                        TextInput::make('hero_focus_4_value')->label('Persentase 4')->required(),
-                                    ])
-                                    ->columns(2),
-                            ]),
                         Tab::make('Angka Dampak')
                             ->schema([
                                 Section::make()
@@ -81,10 +77,30 @@ class WebsiteContentForm
                                 Section::make()
                                     ->schema([
                                         TextInput::make('movement_title')->label('Judul Bagian')->required()->columnSpanFull(),
-                                        TextInput::make('feature_1_text')->label('Pilihan 1')->required(),
-                                        TextInput::make('feature_2_text')->label('Pilihan 2')->required(),
-                                        TextInput::make('feature_3_text')->label('Pilihan 3')->required(),
-                                        TextInput::make('feature_4_text')->label('Pilihan 4')->required(),
+                                        Repeater::make('movement_items')
+                                            ->label('Daftar Pilihan')
+                                            ->schema([
+                                                TextInput::make('text')
+                                                    ->label('Teks')
+                                                    ->required(),
+                                                Select::make('icon')
+                                                    ->label('Ikon')
+                                                    ->options(static::movementIconOptions())
+                                                    ->native(false)
+                                                    ->required(),
+                                                TextInput::make('link')
+                                                    ->label('Link Tujuan')
+                                                    ->required()
+                                                    ->helperText('Bisa isi path internal seperti /donasi, anchor seperti #program, atau URL penuh.')
+                                                    ->columnSpanFull(),
+                                            ])
+                                            ->defaultItems(0)
+                                            ->minItems(1)
+                                            ->reorderable()
+                                            ->collapsible()
+                                            ->itemLabel(fn (array $state): ?string => filled($state['text'] ?? null) ? $state['text'] : 'Pilihan baru')
+                                            ->columns(2)
+                                            ->columnSpanFull(),
                                     ])
                                     ->columns(2),
                             ]),

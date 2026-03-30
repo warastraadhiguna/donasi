@@ -574,7 +574,7 @@
         <section class="brand-hero d-flex align-items-center" style="background-image: linear-gradient(120deg, rgba(15, 23, 32, 0.85), rgba(18, 63, 74, 0.6)), url('{{ $websiteContent->hero_background_image_url }}');">
             <div class="container">
                 <div class="row align-items-center g-4">
-                    <div class="col-lg-7 col-12">
+                    <div class="col-lg-9 col-12">
                         <div class="hero-copy" data-aos="fade-up" data-aos-duration="900">
                             <span class="hero-eyebrow"><i class="bi-stars"></i>{{ $websiteContent->hero_eyebrow }}</span>
                             <h1>{{ $websiteContent->hero_title }}</h1>
@@ -588,17 +588,6 @@
                                 <span><i class="bi-check2-circle me-2"></i>{{ $websiteContent->hero_note_2 }}</span>
                                 <span><i class="bi-check2-circle me-2"></i>{{ $websiteContent->hero_note_3 }}</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-5 col-12">
-                        <div class="hero-card" data-aos="zoom-in" data-aos-delay="120" data-aos-duration="850">
-                            <span class="program-pill mb-3">Fokus Utama</span>
-                            <h4 class="mb-3">{{ $websiteContent->hero_focus_title }}</h4>
-                            <div class="stat-line"><span class="stat-label">{{ $websiteContent->hero_focus_1_label }}</span><span class="stat-value">{{ $websiteContent->hero_focus_1_value }}</span></div>
-                            <div class="stat-line"><span class="stat-label">{{ $websiteContent->hero_focus_2_label }}</span><span class="stat-value">{{ $websiteContent->hero_focus_2_value }}</span></div>
-                            <div class="stat-line"><span class="stat-label">{{ $websiteContent->hero_focus_3_label }}</span><span class="stat-value">{{ $websiteContent->hero_focus_3_value }}</span></div>
-                            <div class="stat-line"><span class="stat-label">{{ $websiteContent->hero_focus_4_label }}</span><span class="stat-value">{{ $websiteContent->hero_focus_4_value }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -632,42 +621,28 @@
 
         <section class="section-padding">
             <div class="container">
+                @php
+                    $movementItems = collect($websiteContent->movement_items)->filter(fn ($item) => filled($item['text'] ?? null))->values();
+                @endphp
                 <div class="row">
                     <div class="col-lg-10 col-12 text-center mx-auto" data-aos="fade-up">
                         <h2 class="mb-5">{{ $websiteContent->movement_title }}</h2>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="featured-block d-flex justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="0">
-                            <a href="/donasi" class="d-block">
-                                <img src="images/icons/hands.png" class="featured-block-image img-fluid" alt="Relawan">
-                                <p class="featured-block-text">{{ $websiteContent->feature_1_text }}</p>
-                            </a>
+                    @foreach ($movementItems as $index => $item)
+                        @php
+                            $movementLink = $item['link'] ?? '/donasi';
+                            $movementIsExternal = str_starts_with((string) $movementLink, 'http://') || str_starts_with((string) $movementLink, 'https://');
+                            $movementAlt = trim((string) ($item['text'] ?? 'Pilihan'));
+                        @endphp
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 {{ $loop->last ? 'mb-lg-0' : 'mb-lg-0' }}">
+                            <div class="featured-block d-flex justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                                <a href="{{ $movementLink }}" class="d-block" @if($movementIsExternal) target="_blank" rel="noopener noreferrer" @endif>
+                                    <img src="{{ asset($item['icon'] ?? 'images/icons/heart.png') }}" class="featured-block-image img-fluid" alt="{{ $movementAlt }}">
+                                    <p class="featured-block-text">{{ $item['text'] }}</p>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="featured-block d-flex justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="100">
-                            <a href="#program" class="d-block">
-                                <img src="images/icons/heart.png" class="featured-block-image img-fluid" alt="Aksi sosial">
-                                <p class="featured-block-text">{{ $websiteContent->feature_2_text }}</p>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-                        <div class="featured-block d-flex justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
-                            <a href="/donasi" class="d-block">
-                                <img src="images/icons/receive.png" class="featured-block-image img-fluid" alt="Donasi">
-                                <p class="featured-block-text">{{ $websiteContent->feature_3_text }}</p>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-12">
-                        <div class="featured-block d-flex justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
-                            <a href="#kontak" class="d-block">
-                                <img src="images/icons/scholarship.png" class="featured-block-image img-fluid" alt="Kemitraan">
-                                <p class="featured-block-text">{{ $websiteContent->feature_4_text }}</p>
-                            </a>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </section>

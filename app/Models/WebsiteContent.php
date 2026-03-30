@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Storage;
     'hero_focus_4_label',
     'hero_focus_4_value',
     'movement_title',
+    'movement_items',
     'feature_1_text',
     'feature_2_text',
     'feature_3_text',
@@ -109,6 +110,39 @@ class WebsiteContent extends Model
 
     protected static ?self $current = null;
 
+    public function getMovementItemsAttribute(mixed $value): array
+    {
+        if (is_array($value)) {
+            return $this->sanitizeMovementItems($value);
+        }
+
+        if (filled($value)) {
+            $decoded = json_decode((string) $value, true);
+
+            if (is_array($decoded)) {
+                return $this->sanitizeMovementItems($decoded);
+            }
+        }
+
+        return $this->legacyMovementItems();
+    }
+
+    public function setMovementItemsAttribute(mixed $value): void
+    {
+        if (blank($value)) {
+            $this->attributes['movement_items'] = null;
+
+            return;
+        }
+
+        $items = is_array($value) ? $value : [];
+
+        $this->attributes['movement_items'] = json_encode(
+            $this->sanitizeMovementItems($items),
+            JSON_UNESCAPED_UNICODE,
+        );
+    }
+
     public static function current(): self
     {
         if (static::$current instanceof self) {
@@ -155,5 +189,58 @@ class WebsiteContent extends Model
         }
 
         return asset($fallback);
+    }
+
+    protected function legacyMovementItems(): array
+    {
+        return $this->sanitizeMovementItems([
+            [
+                'text' => $this->attributes['feature_1_text'] ?? 'Gabung jadi relawan',
+                'icon' => 'images/icons/hands.png',
+                'link' => '/donasi',
+            ],
+            [
+                'text' => $this->attributes['feature_2_text'] ?? 'Dukung program sosial',
+                'icon' => 'images/icons/heart.png',
+                'link' => '#program',
+            ],
+            [
+                'text' => $this->attributes['feature_3_text'] ?? 'Salurkan donasi',
+                'icon' => 'images/icons/receive.png',
+                'link' => '/donasi',
+            ],
+            [
+                'text' => $this->attributes['feature_4_text'] ?? 'Buka kolaborasi',
+                'icon' => 'images/icons/scholarship.png',
+                'link' => '#kontak',
+            ],
+        ]);
+    }
+
+    protected function sanitizeMovementItems(array $items): array
+    {
+        return collect($items)
+            ->map(function (mixed $item): ?array {
+                if (! is_array($item)) {
+                    return null;
+                }
+
+                $text = trim((string) ($item['text'] ?? ''));
+                $icon = trim((string) ($item['icon'] ?? ''));
+                $link = trim((string) ($item['link'] ?? ''));
+
+                if (blank($text)) {
+                    return null;
+                }
+
+                return [
+                    'text' => $text,
+                    'icon' => filled($icon) ? $icon : 'images/icons/heart.png',
+                    'link' => filled($link) ? $link : '/donasi',
+                ];
+            })
+            ->filter()
+            ->values()
+            ->all();
     }
 }

@@ -3,6 +3,7 @@
 use App\Models\ContactMessage;
 use App\Models\DonationDetail;
 use App\Models\DonationProgram;
+use App\Models\HmiProfile;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
@@ -61,6 +62,12 @@ Route::get('/donasi', function () {
 })->name('donate.page');
 
 Route::post('/donasi', function (Request $request) {
+    $availablePaymentMethods = ['Transfer'];
+
+    if (filled(HmiProfile::current()->qris_image_url)) {
+        $availablePaymentMethods[] = 'QRIS';
+    }
+
     $validator = Validator::make($request->all(), [
         'program' => [
             'required',
@@ -70,7 +77,7 @@ Route::post('/donasi', function (Request $request) {
         'amount' => ['required', 'string'],
         'donation_name' => ['required', 'string', 'max:255'],
         'donation_whatsapp' => ['required', 'string', 'max:255'],
-        'payment_method' => ['required', Rule::in(['Transfer', 'QRIS'])],
+        'payment_method' => ['required', Rule::in($availablePaymentMethods)],
         'payment_proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
     ], [
         'program.required' => 'Ruang donasi wajib dipilih.',

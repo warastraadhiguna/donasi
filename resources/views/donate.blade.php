@@ -840,21 +840,23 @@
 
                                         <div class="form-check">
                                             <input class="form-check-input js-payment-option" type="radio" name="payment_method"
-                                                id="payment-transfer" value="Transfer" {{ old('payment_method') === 'Transfer' ? 'checked' : '' }}>
+                                                id="payment-transfer" value="Transfer" {{ old('payment_method', filled($hmiProfile->qris_image_url) ? null : 'Transfer') === 'Transfer' ? 'checked' : '' }}>
                                             <label class="form-check-label" for="payment-transfer">
                                                 <i class="bi-bank custom-icon ms-1"></i>
                                                 Transfer
                                             </label>
                                         </div>
 
-                                        <div class="form-check">
-                                            <input class="form-check-input js-payment-option" type="radio" name="payment_method"
-                                                id="payment-qris" value="QRIS" {{ old('payment_method') === 'QRIS' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="payment-qris">
-                                                <i class="bi-qr-code custom-icon ms-1"></i>
-                                                QRIS
-                                            </label>
-                                        </div>
+                                        @if (filled($hmiProfile->qris_image_url))
+                                            <div class="form-check">
+                                                <input class="form-check-input js-payment-option" type="radio" name="payment_method"
+                                                    id="payment-qris" value="QRIS" {{ old('payment_method') === 'QRIS' ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="payment-qris">
+                                                    <i class="bi-qr-code custom-icon ms-1"></i>
+                                                    QRIS
+                                                </label>
+                                            </div>
+                                        @endif
 
                                         <div id="payment-transfer-detail" class="payment-detail-card" data-payment-detail="Transfer">
                                             <span class="payment-detail-label">Rekening Transfer</span>
@@ -863,17 +865,13 @@
                                             <p class="mb-0"><strong>Nama Pemilik:</strong> {{ $hmiProfile->transfer_account_holder }}</p>
                                         </div>
 
-                                        <div id="payment-qris-detail" class="payment-detail-card text-center" data-payment-detail="QRIS">
-                                            @if (filled($hmiProfile->qris_image_url))
+                                        @if (filled($hmiProfile->qris_image_url))
+                                            <div id="payment-qris-detail" class="payment-detail-card text-center" data-payment-detail="QRIS">
                                                 <img src="{{ $hmiProfile->qris_image_url }}" class="img-fluid rounded-4 mb-3" alt="QRIS {{ $hmiProfile->organization_name }}">
-                                            @else
-                                                <div class="qris-dummy">
-                                                    <div class="qris-dummy-badge">QRIS</div>
-                                                </div>
-                                            @endif
-                                            <span class="payment-detail-label">QR Bayar</span>
-                                            <p class="mb-0">{{ filled($hmiProfile->qris_image_url) ? 'Scan QRIS ini untuk pembayaran.' : 'Scan QRIS dummy ini untuk simulasi pembayaran.' }}</p>
-                                        </div>
+                                                <span class="payment-detail-label">QR Bayar</span>
+                                                <p class="mb-0">Scan QRIS ini untuk pembayaran.</p>
+                                            </div>
+                                        @endif
 
                                         <label class="proof-upload-box" for="payment-proof">
                                             <input type="file" id="payment-proof" name="payment_proof" accept=".jpg,.jpeg,.png,.webp,.pdf" required>
