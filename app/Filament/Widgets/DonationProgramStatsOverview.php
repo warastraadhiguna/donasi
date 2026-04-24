@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\DonationPrograms\DonationProgramResource;
 use App\Models\DonationDetail;
 use App\Models\DonationProgram;
 use Filament\Support\Icons\Heroicon;
@@ -33,23 +34,50 @@ class DonationProgramStatsOverview extends StatsOverviewWidget
             Stat::make('Total Ruang Donasi', number_format($totalPrograms))
                 ->description('Semua program yang tercatat')
                 ->color('gray')
-                ->icon(Heroicon::OutlinedSquares2x2),
+                ->icon(Heroicon::OutlinedSquares2x2)
+                ->url(DonationProgramResource::getUrl('index')),
             Stat::make('Aktif', number_format($activePrograms))
                 ->description('Masih menerima donasi')
                 ->color('success')
-                ->icon(Heroicon::OutlinedBolt),
+                ->icon(Heroicon::OutlinedBolt)
+                ->url($this->getDonationProgramStatusUrl('Aktif')),
             Stat::make('Tercapai', number_format($completedPrograms))
                 ->description('Target donasi sudah terpenuhi')
                 ->color('info')
-                ->icon(Heroicon::OutlinedCheckBadge),
+                ->icon(Heroicon::OutlinedCheckBadge)
+                ->url($this->getDonationProgramStatusUrl('Tercapai')),
             Stat::make('Selesai', number_format($finishedPrograms))
                 ->description('Program sudah ditutup')
                 ->color('warning')
-                ->icon(Heroicon::OutlinedArchiveBox),
+                ->icon(Heroicon::OutlinedArchiveBox)
+                ->url($this->getDonationProgramStatusUrl('Selesai')),
             Stat::make('Pembayaran Pending', number_format($pendingVerifications))
                 ->description('Menunggu verifikasi admin')
                 ->color('danger')
-                ->icon(Heroicon::OutlinedClock),
+                ->icon(Heroicon::OutlinedClock)
+                ->url($this->getPendingPaymentsUrl()),
         ];
+    }
+
+    protected function getDonationProgramStatusUrl(string $status): string
+    {
+        return DonationProgramResource::getUrl('index') . '?' . http_build_query([
+            'filters' => [
+                'status' => [
+                    'value' => $status,
+                ],
+            ],
+        ]);
+    }
+
+    protected function getPendingPaymentsUrl(): string
+    {
+        return DonationProgramResource::getUrl('index') . '?' . http_build_query([
+            'filters' => [
+                'pending_payments' => [
+                    'isActive' => true,
+                ],
+            ],
+        ]);
     }
 }

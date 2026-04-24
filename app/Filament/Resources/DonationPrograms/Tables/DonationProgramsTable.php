@@ -6,9 +6,12 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DonationProgramsTable
 {
@@ -52,7 +55,19 @@ class DonationProgramsTable
             ])
             ->modifyQueryUsing(fn ($query) => $query->withSum('donationDetails', 'amount'))
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'Aktif' => 'Aktif',
+                        'Tercapai' => 'Tercapai',
+                        'Selesai' => 'Selesai',
+                    ]),
+                Filter::make('pending_payments')
+                    ->label('Pembayaran pending')
+                    ->query(fn (Builder $query): Builder => $query->whereHas(
+                        'donationDetails',
+                        fn (Builder $query): Builder => $query->where('is_verified', false),
+                    )),
             ])
             ->recordActions([
                 EditAction::make(),
