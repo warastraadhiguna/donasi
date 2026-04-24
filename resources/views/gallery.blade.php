@@ -136,28 +136,32 @@
             position: relative;
         }
 
-        .gallery-card-media img {
+        .gallery-card-media img,
+        .gallery-card-media video {
             width: 100%;
             height: 240px;
             object-fit: cover;
             display: block;
         }
 
-        .gallery-card.is-video .gallery-card-media::after {
-            content: "\f4f4";
-            font-family: bootstrap-icons;
+        .gallery-video-play-icon {
             position: absolute;
-            inset: 50% auto auto 50%;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
             transform: translate(-50%, -50%);
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
+            width: 68px;
+            height: 68px;
             display: grid;
             place-items: center;
-            background: rgba(15, 23, 32, 0.72);
-            color: #fff;
-            font-size: 24px;
-            pointer-events: none;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 14px 30px rgba(15, 23, 32, 0.12);
+            font-size: 34px;
+        }
+
+        .gallery-card.is-video .gallery-card-media::after {
+            content: none;
         }
 
         .gallery-card-tag {
@@ -350,8 +354,8 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#tentang">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#program">Program</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="/galeri">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#kontak">Hubungi Kami</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/galeri">Galeri</a></li>
                     <li class="nav-item ms-3"><a class="nav-link custom-btn custom-border-btn btn" href="/donasi">Donasi Sekarang</a></li>
                 </ul>
             </div>
@@ -388,7 +392,14 @@
                             <button type="button" class="gallery-card {{ $item['type'] === 'video' ? 'is-video' : '' }} js-gallery-thumb" data-index="{{ $index }}" data-bs-toggle="modal" data-bs-target="#siteGalleryModal">
                                 <div class="gallery-card-media">
                                     <span class="gallery-card-tag">{{ $item['type'] === 'video' ? 'Video' : 'Foto' }}</span>
-                                    <img src="{{ $item['thumb'] }}" alt="{{ $item['program_title'] }}">
+                                    @if ($item['type'] === 'video')
+                                        <video muted playsinline preload="metadata" aria-hidden="true">
+                                            <source src="{{ $item['src'] }}">
+                                        </video>
+                                        <span class="gallery-video-play-icon bi-play-fill" aria-hidden="true"></span>
+                                    @else
+                                        <img src="{{ $item['thumb'] }}" alt="{{ $item['program_title'] }}">
+                                    @endif
                                     <div class="gallery-card-info">
                                         <h5>{{ $item['program_title'] }}</h5>
                                     </div>
@@ -432,7 +443,7 @@
                             @foreach ($galleryItems as $index => $item)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                     @if ($item['type'] === 'video')
-                                        <video controls preload="metadata" poster="{{ $item['poster'] }}">
+                                        <video controls preload="metadata">
                                             <source src="{{ $item['src'] }}">
                                             Browser kamu belum mendukung video.
                                         </video>

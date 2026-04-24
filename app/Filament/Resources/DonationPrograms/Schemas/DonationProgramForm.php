@@ -85,16 +85,6 @@ class DonationProgramForm
                                         TagsInput::make('focus')
                                             ->label('Fokus Program')
                                             ->placeholder('Tambahkan fokus program'),
-                                        Repeater::make('description')
-                                            ->label('Paragraf Detail')
-                                            ->schema([
-                                                Textarea::make('body')
-                                                    ->label('Paragraf')
-                                                    ->required()
-                                                    ->rows(3),
-                                            ])
-                                            ->defaultItems(2)
-                                            ->columnSpanFull(),
                                     ])
                                     ->columns(2),
                             ]),
@@ -130,19 +120,18 @@ class DonationProgramForm
                                                     ->directory('donation-programs/gallery')
                                                     ->visibility('public')
                                                     ->maxSize(102400)
-                                                    ->acceptedFileTypes(fn ($get): array => $get('type') === 'video'
-                                                        ? ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime']
-                                                        : ['image/*'])
+                                                    ->acceptedFileTypes([
+                                                        'image/jpeg',
+                                                        'image/png',
+                                                        'image/webp',
+                                                        'image/gif',
+                                                        'video/mp4',
+                                                        'video/webm',
+                                                        'video/ogg',
+                                                        'video/quicktime',
+                                                    ])
                                                     ->helperText('Upload file gambar atau video.')
                                                     ->required(),
-                                                FileUpload::make('poster')
-                                                    ->label('Gambar Preview')
-                                                    ->image()
-                                                    ->disk('public')
-                                                    ->directory('donation-programs/gallery/posters')
-                                                    ->visibility('public')
-                                                    ->maxSize(102400)
-                                                    ->helperText('Opsional. Satu gambar ini dipakai sebagai preview galeri dan cover video.'),
                                             ])
                                             ->columns(2)
                                             ->columnSpanFull(),

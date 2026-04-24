@@ -230,8 +230,8 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#tentang">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#program">Program</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/galeri">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#kontak">Hubungi Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/galeri">Galeri</a></li>
                     <li class="nav-item ms-3"><a class="nav-link custom-btn custom-border-btn btn" href="/donasi">Donasi Sekarang</a></li>
                 </ul>
             </div>

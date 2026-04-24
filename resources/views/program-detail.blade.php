@@ -38,6 +38,7 @@
 
         .navbar-brand .logo {
             width: 74px;
+            height: auto;
             margin-right: 14px;
         }
 
@@ -48,9 +49,8 @@
         }
 
         .news-detail-header-section {
-            background:
-                linear-gradient(135deg, rgba(15, 23, 32, 0.82), rgba(18, 63, 74, 0.72)),
-                url("{{ $program['hero_image'] }}") center center / cover no-repeat;
+            background: url("{{ $program['hero_image'] }}") center center / cover no-repeat;
+            min-height: 340px;
         }
 
         .news-block,
@@ -63,6 +63,10 @@
 
         .program-meta-line {
             gap: 18px;
+        }
+
+        .news-block-info {
+            padding: clamp(22px, 3vw, 36px);
         }
 
         .news-block-info .news-category-block {
@@ -130,41 +134,42 @@
             padding: 0;
             border-radius: 18px;
             overflow: hidden;
-            background: #fff;
+            background: #f1f7f9;
             box-shadow: 0 10px 24px rgba(15, 23, 32, 0.08);
         }
 
-        .program-gallery-thumb img {
+        .program-gallery-thumb img,
+        .program-gallery-thumb video {
             width: 100%;
             height: 110px;
             object-fit: cover;
             transition: transform 0.25s ease;
+            display: block;
         }
 
-        .program-gallery-thumb:hover img {
+        .program-gallery-thumb:hover img,
+        .program-gallery-thumb:hover video {
             transform: scale(1.04);
         }
 
         .program-gallery-thumb.is-video {
             position: relative;
+            color: var(--secondary-color);
         }
 
-        .program-gallery-thumb.is-video::after {
-            content: "\f4f4";
-            font-family: bootstrap-icons;
+        .program-gallery-thumb.is-video .program-gallery-video-icon {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 42px;
-            height: 42px;
+            width: 54px;
+            height: 54px;
             display: grid;
             place-items: center;
             border-radius: 50%;
-            background: rgba(15, 23, 32, 0.72);
-            color: #fff;
-            font-size: 18px;
-            pointer-events: none;
+            background: #fff;
+            box-shadow: 0 10px 24px rgba(15, 23, 32, 0.1);
+            font-size: 26px;
         }
 
         .gallery-modal .modal-content {
@@ -247,8 +252,6 @@
                         return [
                             'type' => 'video',
                             'src' => $item,
-                            'poster' => $program['hero_image'],
-                            'thumb' => $program['hero_image'],
                         ];
                     }
 
@@ -264,8 +267,7 @@
                 return [
                     'type' => $type,
                     'src' => $item['src'] ?? '',
-                    'thumb' => $item['thumb'] ?? ($item['poster'] ?? ($item['src'] ?? $program['hero_image'])),
-                    'poster' => $item['poster'] ?? $program['hero_image'],
+                    'thumb' => $type === 'video' ? null : ($item['src'] ?? ''),
                 ];
             })
             ->values();
@@ -309,9 +311,8 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#tentang">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#program">Program</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/galeri">Galeri</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/ruang-donasi">Semua Ruang Donasi</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#kontak">Hubungi Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/galeri">Galeri</a></li>
                     <li class="nav-item ms-3"><a class="nav-link custom-btn custom-border-btn btn" href="/donasi">Donasi Sekarang</a></li>
                 </ul>
             </div>
@@ -320,14 +321,6 @@
 
     <main>
         <section class="news-detail-header-section text-center">
-            <div class="section-overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-12">
-                        <h1 class="text-white">{{ $program['title'] }}</h1>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section class="news-section section-padding">
@@ -361,9 +354,6 @@
                                 <div class="news-block-body">
                                     <p><strong>{{ $program['summary'] }}</strong></p>
                                     <p>{{ $program['lead'] }}</p>
-                                    @foreach ($program['description'] as $paragraph)
-                                        <p>{{ $paragraph }}</p>
-                                    @endforeach
 
                                     <blockquote>{{ $program['quote'] }}</blockquote>
                                 </div>
@@ -392,14 +382,25 @@
                     </div>
 
                     <div class="col-lg-4 col-12 mx-auto mt-4 mt-lg-0">
+
+
                         <div class="program-sidebar-card">
-                            <h5 class="mb-3">Fokus Program</h5>
-                            <ul class="program-focus-list">
-                                @foreach ($program['focus'] as $focus)
-                                    <li><i class="bi-check2-circle"></i>{{ $focus }}</li>
+                            <h5 class="mb-3">Galeri Program</h5>
+                            <div class="program-gallery-grid">
+                                @foreach ($mediaItems as $index => $media)
+                                    <button type="button" class="program-gallery-thumb js-gallery-thumb {{ $media['type'] === 'video' ? 'is-video' : '' }}" data-index="{{ $index }}" data-bs-toggle="modal" data-bs-target="#programGalleryModal" aria-label="Lihat media {{ $index + 1 }}">
+                                        @if ($media['type'] === 'video')
+                                            <video muted playsinline preload="metadata" aria-hidden="true">
+                                                <source src="{{ $media['src'] }}">
+                                            </video>
+                                            <span class="program-gallery-video-icon bi-play-fill" aria-hidden="true"></span>
+                                        @else
+                                            <img src="{{ $media['thumb'] }}" alt="{{ $program['title'] }} media {{ $index + 1 }}">
+                                        @endif
+                                    </button>
                                 @endforeach
-                            </ul>
-                        </div>
+                            </div>
+                        </div>     
 
                         <div class="program-sidebar-card">
                             <h5 class="mb-3">Ringkasan</h5>
@@ -413,17 +414,15 @@
                             <p class="mb-2"><strong>Status:</strong> {{ $program['status'] }}</p>
                             <p class="mb-0"><strong>Kategori:</strong> {{ implode(', ', $program['categories']) }}</p>
                         </div>
-
+                   
                         <div class="program-sidebar-card">
-                            <h5 class="mb-3">Galeri Program</h5>
-                            <div class="program-gallery-grid">
-                                @foreach ($mediaItems as $index => $media)
-                                    <button type="button" class="program-gallery-thumb js-gallery-thumb {{ $media['type'] === 'video' ? 'is-video' : '' }}" data-index="{{ $index }}" data-bs-toggle="modal" data-bs-target="#programGalleryModal" aria-label="Lihat media {{ $index + 1 }}">
-                                        <img src="{{ $media['thumb'] }}" alt="{{ $program['title'] }} media {{ $index + 1 }}">
-                                    </button>
+                            <h5 class="mb-3">Fokus Program</h5>
+                            <ul class="program-focus-list">
+                                @foreach ($program['focus'] as $focus)
+                                    <li><i class="bi-check2-circle"></i>{{ $focus }}</li>
                                 @endforeach
-                            </div>
-                        </div>
+                            </ul>
+                        </div>                        
                     </div>
                 </div>
             </div>
@@ -442,7 +441,7 @@
                             @foreach ($mediaItems as $index => $media)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                     @if ($media['type'] === 'video')
-                                        <video controls preload="metadata" poster="{{ $media['poster'] ?? $program['hero_image'] }}">
+                                        <video controls preload="metadata">
                                             <source src="{{ $media['src'] }}">
                                             Browser kamu belum mendukung video.
                                         </video>

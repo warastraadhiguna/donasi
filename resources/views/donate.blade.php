@@ -551,12 +551,14 @@
             padding: 16px 18px;
             border-radius: 18px;
             font-size: 15px;
+            font-weight: 700;
         }
 
         .donation-alert-success {
-            background: rgba(84, 191, 208, 0.12);
-            color: #12616d;
-            border: 1px solid rgba(84, 191, 208, 0.24);
+            background: linear-gradient(135deg, #ea004f, #54bfd0);
+            color: #fff;
+            border: 0;
+            box-shadow: 0 16px 34px rgba(234, 0, 79, 0.22);
         }
 
         .donation-alert-error {
@@ -571,13 +573,133 @@
             font-size: 13px;
         }
 
+        .donation-stepper {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .donation-stepper-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 52px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            background: #f4f8fa;
+            border: 1px solid rgba(220, 232, 236, 0.92);
+            color: var(--p-color);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .donation-stepper-item span {
+            width: 24px;
+            height: 24px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            background: #fff;
+            border: 1px solid rgba(220, 232, 236, 0.92);
+            color: var(--dark-color);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .donation-stepper-item.is-active {
+            background: rgba(84, 191, 208, 0.12);
+            border-color: rgba(84, 191, 208, 0.45);
+            color: #12616d;
+        }
+
+        .donation-stepper-item.is-active span {
+            background: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: #fff;
+        }
+
+        .donation-step {
+            display: none;
+        }
+
+        .donation-step.is-active {
+            display: block;
+        }
+
+        .wizard-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .wizard-actions .btn {
+            min-width: 150px;
+            white-space: normal;
+            line-height: 1.2;
+        }
+
+        .pending-summary {
+            margin-top: 16px;
+            padding: 18px;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: inset 0 0 0 1px rgba(220, 232, 236, 0.92);
+        }
+
+        .pending-summary p {
+            margin-bottom: 8px;
+        }
+
+        .pending-summary p:last-child {
+            margin-bottom: 0;
+        }
+
         @media screen and (max-width: 991px) {
             .donation-form-shell {
                 padding: 28px 20px;
             }
+
+            .donation-stepper {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
 
         @media screen and (max-width: 575px) {
+            .donation-form-shell {
+                padding: 18px 12px;
+                border-radius: 22px;
+            }
+
+            .donation-section-card {
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .donation-section-card h5 {
+                font-size: 18px;
+            }
+
+            .donation-stepper {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+            }
+
+            .donation-stepper-item {
+                min-height: 48px;
+                gap: 8px;
+                padding: 8px 10px;
+                border-radius: 12px;
+                font-size: 12px;
+            }
+
+            .donation-stepper-item span {
+                width: 22px;
+                height: 22px;
+                font-size: 11px;
+            }
+
             .program-preview-card {
                 padding: 18px;
             }
@@ -591,26 +713,89 @@
             }
 
             .amount-choice-btn {
-                padding: 14px;
+                gap: 10px;
+                padding: 12px;
+                border-radius: 14px;
             }
 
             .amount-choice-value {
-                font-size: 20px;
+                font-size: 15px;
+                letter-spacing: 0;
             }
 
             .amount-choice-mark {
-                width: 40px;
-                height: 40px;
+                width: 30px;
+                height: 30px;
+                border-radius: 10px;
+                font-size: 13px;
+            }
+
+            .amount-choice-check {
+                width: 22px;
+                height: 22px;
+                font-size: 11px;
+            }
+
+            .amount-input-shell {
+                padding: 10px;
+                border-radius: 18px;
+            }
+
+            .amount-input-shell .input-group {
+                flex-wrap: nowrap;
             }
 
             .amount-input-shell .input-group-text {
-                min-width: 58px;
-                font-size: 22px;
+                min-width: 48px;
+                padding-inline: 10px;
+                font-size: 16px;
             }
 
             .amount-input-shell .form-control {
-                min-height: 68px;
-                font-size: 24px;
+                min-width: 0;
+                min-height: 56px;
+                padding-inline: 12px;
+                font-size: 18px;
+                letter-spacing: 0;
+            }
+
+            .amount-input-shell .form-control::placeholder {
+                font-size: 13px;
+            }
+
+            .payment-detail-card,
+            .pending-summary {
+                padding: 14px;
+                border-radius: 16px;
+                font-size: 13px;
+            }
+
+            .proof-upload-box {
+                min-height: 160px;
+                padding: 18px 12px;
+            }
+
+            .wizard-actions {
+                gap: 10px;
+                margin-top: 18px;
+            }
+
+            .wizard-actions .btn {
+                flex: 1 1 0;
+                min-width: 0;
+                padding: 13px 10px;
+                font-size: 13px;
+                text-align: center;
+            }
+
+            .wizard-actions span {
+                display: none;
+            }
+
+            .donation-alert {
+                padding: 16px;
+                border-radius: 16px;
+                font-size: 14px;
             }
         }
     </style>
@@ -656,8 +841,8 @@
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#tentang">Tentang</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#program">Program</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/galeri">Galeri</a></li>
                     <li class="nav-item"><a class="nav-link" href="/#kontak">Hubungi Kami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/galeri">Galeri</a></li>
                     <li class="nav-item ms-3"><a class="nav-link custom-btn custom-border-btn btn" href="/donasi">Donasi Sekarang</a></li>
                 </ul>
             </div>
@@ -699,213 +884,283 @@
                             </div>
                         @endif
 
+                        @php
+                            $prefillProgram = old('program', $selectedProgram ?: ($pendingDonation?->donationProgram?->slug));
+                            $prefillAmount = old('amount', $pendingDonation ? number_format((int) $pendingDonation->amount, 0, ',', '.') : null);
+                            $prefillDonorName = old('donation_name', $pendingDonation?->donor_name);
+                            $prefillDonorWhatsapp = old('donation_whatsapp', $pendingDonation?->donor_whatsapp);
+                            $prefillPaymentMethod = old('payment_method', $pendingDonation?->payment_method ?? (filled($hmiProfile->qris_image_url) ? null : 'Transfer'));
+                            $hasPendingDonation = filled($pendingDonation);
+                            $defaultWizardStep = ($hasPendingDonation && request('step') === 'proof') ? 5 : 1;
+                            $initialWizardStep = (int) old('wizard_step', $defaultWizardStep);
+                            $initialStage = old('stage', $hasPendingDonation ? 'proof' : 'create');
+                        @endphp
+
+                        @if (session('donation_pending'))
+                            <div class="donation-alert donation-alert-success">
+                                {{ session('donation_pending') }}
+                            </div>
+                        @endif
+
                         <form class="custom-form donate-form" action="{{ route('donate.page') }}" method="post" enctype="multipart/form-data" role="form">
                             @csrf
+                            <input type="hidden" name="stage" id="donation-stage" value="{{ $initialStage }}">
+                            <input type="hidden" name="wizard_step" id="wizard-step" value="{{ $initialWizardStep }}">
+
                             <h3 class="mb-4">Form Donasi HMI Peduli</h3>
 
-                            <div class="row donation-grid">
-                                <div class="col-lg-6 col-12">
-                                    <div class="donation-section-card">
-                                        <h5>Pilih Ruang Donasi</h5>
-                                        <div class="custom-select-wrap">
-                                            <select name="program" id="donation-program" class="form-control" required>
-                                                <option value="" disabled {{ $selectedProgram ? '' : 'selected' }}>Pilih ruang donasi</option>
-                                                @foreach ($programs as $program)
-                                                    <option value="{{ $program->slug }}" {{ old('program', $selectedProgram) === $program->slug ? 'selected' : '' }}>
-                                                        {{ $program->title }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @error('program')
-                                            <div class="field-error">{{ $message }}</div>
-                                        @enderror
-
-                                        <div id="program-preview" class="program-preview-card is-empty">
-                                            <div class="program-preview-content">
-                                                <h4 class="program-preview-title js-program-title"></h4>
-                                                <p class="program-preview-summary js-program-summary"></p>
-
-                                                <div class="program-preview-progress">
-                                                    <div class="program-preview-progress-top">
-                                                        <span class="js-program-progress-label"></span>
-                                                        <span class="js-program-status"></span>
-                                                    </div>
-                                                    <div class="program-preview-progress-bar">
-                                                        <div class="program-preview-progress-fill js-program-progress-fill"></div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="program-preview-stats">
-                                                    <div class="program-preview-stat">
-                                                        <span class="program-preview-stat-label">Terkumpul</span>
-                                                        <span class="program-preview-stat-value js-program-received"></span>
-                                                    </div>
-                                                    <div class="program-preview-stat">
-                                                        <span class="program-preview-stat-label">Target</span>
-                                                        <span class="program-preview-stat-value js-program-target"></span>
-                                                    </div>
-                                                    <div class="program-preview-stat">
-                                                        <span class="program-preview-stat-label">Status</span>
-                                                        <span class="program-preview-stat-value js-program-status-detail"></span>
-                                                    </div>
-                                                    <div class="program-preview-stat">
-                                                        <span class="program-preview-stat-label">Sisa Hari</span>
-                                                        <span class="program-preview-stat-value js-program-days"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="program-preview-placeholder">
-                                                <i class="bi bi-card-text"></i>
-                                                <strong>Pilih ruang donasi</strong>
-                                                <span>Ringkasan program akan muncul di sini.</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-12">
-                                    <div class="donation-section-card">
-                                        <h5>Nominal Donasi</h5>
-                                        <div class="amount-choice-grid" role="group" aria-label="Pilih nominal donasi cepat">
-                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="5000">
-                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
-                                                <span class="amount-choice-copy">
-                                                    <span class="amount-choice-value">Rp5.000</span>
-                                                </span>
-                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
-                                            </button>
-                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="10000">
-                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
-                                                <span class="amount-choice-copy">
-                                                    <span class="amount-choice-value">Rp10.000</span>
-                                                </span>
-                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
-                                            </button>
-                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="25000">
-                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
-                                                <span class="amount-choice-copy">
-                                                    <span class="amount-choice-value">Rp25.000</span>
-                                                </span>
-                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
-                                            </button>
-                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="50000">
-                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
-                                                <span class="amount-choice-copy">
-                                                    <span class="amount-choice-value">Rp50.000</span>
-                                                </span>
-                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
-                                            </button>
-                                            <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="100000">
-                                                <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
-                                                <span class="amount-choice-copy">
-                                                    <span class="amount-choice-value">Rp100.000</span>
-                                                </span>
-                                                <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
-                                            </button>
-                                        </div>
-
-                                        <div class="amount-input-shell">
-                                            <p class="amount-input-label">Atau isi nominal sendiri</p>
-                                            <div class="input-group mb-0">
-                                                <span class="input-group-text" id="basic-addon1">Rp</span>
-                                                <input type="text" class="form-control" name="amount" id="donation-amount" value="{{ old('amount') }}" placeholder="Tuliskan jumlah nominal"
-                                                    inputmode="numeric" autocomplete="off" aria-label="Nominal donasi" aria-describedby="basic-addon1">
-                                            </div>
-                                            <p class="amount-helper-text">Klik nominal cepat di atas atau tuliskan jumlah donasi sesuai kebutuhan.</p>
-                                        </div>
-                                        @error('amount')
-                                            <div class="field-error">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-12">
-                                    <div class="donation-section-card">
-                                        <h5>Data Donatur</h5>
-                                        <div class="row g-3">
-                                            <div class="col-lg-12 col-12">
-                                                <input type="text" name="donation_name" id="donation-name" class="form-control"
-                                                    placeholder="Nama lengkap" value="{{ old('donation_name') }}" required>
-                                                @error('donation_name')
-                                                    <div class="field-error">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                            <div class="col-lg-12 col-12">
-                                                <input type="tel" name="donation_whatsapp" id="donation-whatsapp"
-                                                    class="form-control" placeholder="No WhatsApp aktif" value="{{ old('donation_whatsapp') }}" required>
-                                                @error('donation_whatsapp')
-                                                    <div class="field-error">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-12">
-                                    <div class="donation-section-card">
-                                        <h5>Metode Pembayaran</h5>
-
-                                        <div class="form-check">
-                                            <input class="form-check-input js-payment-option" type="radio" name="payment_method"
-                                                id="payment-transfer" value="Transfer" {{ old('payment_method', filled($hmiProfile->qris_image_url) ? null : 'Transfer') === 'Transfer' ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="payment-transfer">
-                                                <i class="bi-bank custom-icon ms-1"></i>
-                                                Transfer
-                                            </label>
-                                        </div>
-
-                                        @if (filled($hmiProfile->qris_image_url))
-                                            <div class="form-check">
-                                                <input class="form-check-input js-payment-option" type="radio" name="payment_method"
-                                                    id="payment-qris" value="QRIS" {{ old('payment_method') === 'QRIS' ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="payment-qris">
-                                                    <i class="bi-qr-code custom-icon ms-1"></i>
-                                                    QRIS
-                                                </label>
-                                            </div>
-                                        @endif
-
-                                        <div id="payment-transfer-detail" class="payment-detail-card" data-payment-detail="Transfer">
-                                            <span class="payment-detail-label">Rekening Transfer</span>
-                                            <p class="mb-2"><strong>Nama Bank:</strong> {{ $hmiProfile->transfer_bank_name }}</p>
-                                            <p class="mb-2"><strong>No. Rekening:</strong> {{ $hmiProfile->transfer_account_number }}</p>
-                                            <p class="mb-0"><strong>Nama Pemilik:</strong> {{ $hmiProfile->transfer_account_holder }}</p>
-                                        </div>
-
-                                        @if (filled($hmiProfile->qris_image_url))
-                                            <div id="payment-qris-detail" class="payment-detail-card text-center" data-payment-detail="QRIS">
-                                                <img src="{{ $hmiProfile->qris_image_url }}" class="img-fluid rounded-4 mb-3" alt="QRIS {{ $hmiProfile->organization_name }}">
-                                                <span class="payment-detail-label">QR Bayar</span>
-                                                <p class="mb-0">Scan QRIS ini untuk pembayaran.</p>
-                                            </div>
-                                        @endif
-
-                                        <label class="proof-upload-box" for="payment-proof">
-                                            <input type="file" id="payment-proof" name="payment_proof" accept=".jpg,.jpeg,.png,.webp,.pdf" required>
-                                            <div>
-                                                <div class="proof-upload-icon">
-                                                    <i class="bi-cloud-arrow-up"></i>
-                                                </div>
-                                                <strong>Kirim Bukti Bayar</strong>
-                                                <span class="js-proof-text">Pilih file gambar atau PDF sebagai bukti pembayaran.</span>
-                                            </div>
-                                        </label>
-
-                                        @error('payment_method')
-                                            <div class="field-error">{{ $message }}</div>
-                                        @enderror
-                                        @error('payment_proof')
-                                            <div class="field-error">{{ $message }}</div>
-                                        @enderror
-
-                                        <p class="proof-upload-note">Bukti bayar ini akan masuk ke admin dan diverifikasi terlebih dahulu sebelum dihitung ke donasi terkumpul.</p>
-                                    </div>
-                                </div>
+                            <div class="donation-stepper">
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="1"><span>1</span>Ruang Donasi</div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="2"><span>2</span>Data Donatur</div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="3"><span>3</span>Nominal</div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="4"><span>4</span>Metode Bayar</div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="5"><span>5</span>Bukti Bayar</div>
                             </div>
 
-                            <button type="submit" class="form-control mt-4">Lanjutkan Donasi</button>
+                            <section class="donation-step js-donation-step" data-step="1">
+                                <div class="row donation-grid">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="donation-section-card">
+                                            <h5>Pilih Ruang Donasi</h5>
+                                            <div class="custom-select-wrap">
+                                                <select name="program" id="donation-program" class="form-control">
+                                                    <option value="" disabled {{ $prefillProgram ? '' : 'selected' }}>Pilih ruang donasi</option>
+                                                    @foreach ($programs as $program)
+                                                        <option value="{{ $program->slug }}" {{ $prefillProgram === $program->slug ? 'selected' : '' }}>
+                                                            {{ $program->title }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('program')
+                                                <div class="field-error">{{ $message }}</div>
+                                            @enderror
+
+                                            <div id="program-preview" class="program-preview-card is-empty">
+                                                <div class="program-preview-content">
+                                                    <h4 class="program-preview-title js-program-title"></h4>
+                                                    <p class="program-preview-summary js-program-summary"></p>
+                                                    <div class="program-preview-progress">
+                                                        <div class="program-preview-progress-top">
+                                                            <span class="js-program-progress-label"></span>
+                                                            <span class="js-program-status"></span>
+                                                        </div>
+                                                        <div class="program-preview-progress-bar">
+                                                            <div class="program-preview-progress-fill js-program-progress-fill"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="program-preview-stats">
+                                                        <div class="program-preview-stat">
+                                                            <span class="program-preview-stat-label">Terkumpul</span>
+                                                            <span class="program-preview-stat-value js-program-received"></span>
+                                                        </div>
+                                                        <div class="program-preview-stat">
+                                                            <span class="program-preview-stat-label">Target</span>
+                                                            <span class="program-preview-stat-value js-program-target"></span>
+                                                        </div>
+                                                        <div class="program-preview-stat">
+                                                            <span class="program-preview-stat-label">Status</span>
+                                                            <span class="program-preview-stat-value js-program-status-detail"></span>
+                                                        </div>
+                                                        <div class="program-preview-stat">
+                                                            <span class="program-preview-stat-label">Sisa Hari</span>
+                                                            <span class="program-preview-stat-value js-program-days"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="program-preview-placeholder">
+                                                    <i class="bi bi-card-text"></i>
+                                                    <strong>Pilih ruang donasi</strong>
+                                                    <span>Ringkasan program akan muncul di sini.</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="wizard-actions">
+                                                <span></span>
+                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="2">Next</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="donation-step js-donation-step" data-step="2">
+                                <div class="row donation-grid">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="donation-section-card">
+                                            <h5>Data Donatur</h5>
+                                            <div class="row g-3">
+                                                <div class="col-lg-12 col-12">
+                                                    <input type="text" name="donation_name" id="donation-name" class="form-control"
+                                                        placeholder="Nama lengkap" value="{{ $prefillDonorName }}">
+                                                    @error('donation_name')
+                                                        <div class="field-error">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-lg-12 col-12">
+                                                    <input type="tel" name="donation_whatsapp" id="donation-whatsapp"
+                                                        class="form-control" placeholder="No WhatsApp aktif" value="{{ $prefillDonorWhatsapp }}">
+                                                    @error('donation_whatsapp')
+                                                        <div class="field-error">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="wizard-actions">
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="1">Back</button>
+                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="3">Next</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="donation-step js-donation-step" data-step="3">
+                                <div class="row donation-grid">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="donation-section-card">
+                                            <h5>Nominal Donasi</h5>
+                                            <div class="amount-choice-grid" role="group" aria-label="Pilih nominal donasi cepat">
+                                                <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="5000">
+                                                    <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                    <span class="amount-choice-copy"><span class="amount-choice-value">Rp5.000</span></span>
+                                                    <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                                </button>
+                                                <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="10000">
+                                                    <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                    <span class="amount-choice-copy"><span class="amount-choice-value">Rp10.000</span></span>
+                                                    <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                                </button>
+                                                <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="25000">
+                                                    <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                    <span class="amount-choice-copy"><span class="amount-choice-value">Rp25.000</span></span>
+                                                    <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                                </button>
+                                                <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="50000">
+                                                    <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                    <span class="amount-choice-copy"><span class="amount-choice-value">Rp50.000</span></span>
+                                                    <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                                </button>
+                                                <button type="button" class="amount-choice-btn js-amount-preset" data-amount-value="100000">
+                                                    <span class="amount-choice-mark" aria-hidden="true"><i class="bi bi-heart-fill"></i></span>
+                                                    <span class="amount-choice-copy"><span class="amount-choice-value">Rp100.000</span></span>
+                                                    <span class="amount-choice-check" aria-hidden="true"><i class="bi bi-check-lg"></i></span>
+                                                </button>
+                                            </div>
+                                            <div class="amount-input-shell">
+                                                <p class="amount-input-label">Atau isi nominal sendiri</p>
+                                                <div class="input-group mb-0">
+                                                    <span class="input-group-text" id="basic-addon1">Rp</span>
+                                                    <input type="text" class="form-control" name="amount" id="donation-amount" value="{{ $prefillAmount }}" placeholder="Tuliskan jumlah nominal"
+                                                        inputmode="numeric" autocomplete="off" aria-label="Nominal donasi" aria-describedby="basic-addon1">
+                                                </div>
+                                                <p class="amount-helper-text">Klik nominal cepat di atas atau tuliskan jumlah donasi sesuai kebutuhan.</p>
+                                            </div>
+                                            @error('amount')
+                                                <div class="field-error">{{ $message }}</div>
+                                            @enderror
+                                            <div class="wizard-actions">
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="2">Back</button>
+                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="4">Next</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="donation-step js-donation-step" data-step="4">
+                                <div class="row donation-grid">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="donation-section-card">
+                                            <h5>Metode Pembayaran</h5>
+                                            <div class="form-check">
+                                                <input class="form-check-input js-payment-option" type="radio" name="payment_method"
+                                                    id="payment-transfer" value="Transfer" {{ $prefillPaymentMethod === 'Transfer' ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="payment-transfer">
+                                                    <i class="bi-bank custom-icon ms-1"></i>
+                                                    Transfer
+                                                </label>
+                                            </div>
+
+                                            @if (filled($hmiProfile->qris_image_url))
+                                                <div class="form-check">
+                                                    <input class="form-check-input js-payment-option" type="radio" name="payment_method"
+                                                        id="payment-qris" value="QRIS" {{ $prefillPaymentMethod === 'QRIS' ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="payment-qris">
+                                                        <i class="bi-qr-code custom-icon ms-1"></i>
+                                                        QRIS
+                                                    </label>
+                                                </div>
+                                            @endif
+
+                                            <div id="payment-transfer-detail" class="payment-detail-card" data-payment-detail="Transfer">
+                                                <span class="payment-detail-label">Rekening Transfer</span>
+                                                <p class="mb-2"><strong>Nama Bank:</strong> {{ $hmiProfile->transfer_bank_name }}</p>
+                                                <p class="mb-2"><strong>No. Rekening:</strong> {{ $hmiProfile->transfer_account_number }}</p>
+                                                <p class="mb-0"><strong>Nama Pemilik:</strong> {{ $hmiProfile->transfer_account_holder }}</p>
+                                            </div>
+
+                                            @if (filled($hmiProfile->qris_image_url))
+                                                <div id="payment-qris-detail" class="payment-detail-card text-center" data-payment-detail="QRIS">
+                                                    <img src="{{ $hmiProfile->qris_image_url }}" class="img-fluid rounded-4 mb-3" alt="QRIS {{ $hmiProfile->organization_name }}">
+                                                    <span class="payment-detail-label">QR Bayar</span>
+                                                    <p class="mb-0">Scan QRIS ini untuk pembayaran.</p>
+                                                </div>
+                                            @endif
+
+                                            @error('payment_method')
+                                                <div class="field-error">{{ $message }}</div>
+                                            @enderror
+
+                                            <p class="proof-upload-note">Saat klik Next, data donasi awal langsung tersimpan ke keuangan tanpa bukti bayar.</p>
+
+                                            <div class="wizard-actions">
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="3">Back</button>
+                                                <button type="submit" class="custom-btn btn" id="btn-save-initial">Next: Kirim Bukti Bayar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="donation-step js-donation-step" data-step="5">
+                                <div class="row donation-grid">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="donation-section-card">
+                                            <h5>Kirim Bukti Bayar</h5>
+                                            <p class="proof-upload-note">Data awal sudah masuk ke keuangan. Upload bukti bayar untuk melengkapi transaksi.</p>
+
+                                            @if ($hasPendingDonation)
+                                                <div class="pending-summary">
+                                                    <p><strong>Ruang Donasi:</strong> {{ $pendingDonation->donationProgram?->title }}</p>
+                                                    <p><strong>Donatur:</strong> {{ $pendingDonation->donor_name }}</p>
+                                                    <p><strong>Nominal:</strong> Rp{{ number_format((int) $pendingDonation->amount, 0, ',', '.') }}</p>
+                                                    <p><strong>Metode:</strong> {{ $pendingDonation->payment_method ?: '-' }}</p>
+                                                </div>
+                                            @endif
+
+                                            <label class="proof-upload-box" for="payment-proof">
+                                                <input type="file" id="payment-proof" name="payment_proof" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                                                <div>
+                                                    <div class="proof-upload-icon">
+                                                        <i class="bi-cloud-arrow-up"></i>
+                                                    </div>
+                                                    <strong>Kirim Bukti Bayar</strong>
+                                                    <span class="js-proof-text">Pilih file gambar atau PDF sebagai bukti pembayaran.</span>
+                                                </div>
+                                            </label>
+
+                                            @error('payment_proof')
+                                                <div class="field-error">{{ $message }}</div>
+                                            @enderror
+
+                                            <div class="wizard-actions">
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="4">Back</button>
+                                                <button type="submit" class="custom-btn btn" id="btn-submit-proof">Simpan Bukti Bayar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
                         </form>
                         </div>
                     </div>
@@ -986,6 +1241,14 @@
     <script src="/js/custom.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('.donate-form');
+            const formShell = document.querySelector('.donation-form-shell');
+            const stageInput = document.getElementById('donation-stage');
+            const wizardStepInput = document.getElementById('wizard-step');
+            const stepSections = Array.from(document.querySelectorAll('.js-donation-step'));
+            const stepIndicators = Array.from(document.querySelectorAll('.js-stepper-item'));
+            const stepNextButtons = Array.from(document.querySelectorAll('.js-step-next'));
+            const stepBackButtons = Array.from(document.querySelectorAll('.js-step-back'));
             const paymentOptions = document.querySelectorAll('.js-payment-option');
             const paymentDetails = document.querySelectorAll('[data-payment-detail]');
             const proofInput = document.getElementById('payment-proof');
@@ -996,6 +1259,8 @@
             const donationProgramSelect = document.getElementById('donation-program');
             const programPreview = document.getElementById('program-preview');
             const programPreviewData = @json($programPreviewData);
+            const maxStep = 5;
+            let currentStep = Number(wizardStepInput ? wizardStepInput.value : 1) || 1;
 
             const formatAmount = function (value) {
                 const digits = String(value || '').replace(/\D+/g, '');
@@ -1019,6 +1284,87 @@
                     button.classList.toggle('is-active', isActive);
                     button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
                 });
+            };
+
+            const scrollToFormTop = function () {
+                const target = formShell || form;
+
+                if (!target) {
+                    return;
+                }
+
+                window.scrollTo({
+                    top: Math.max(target.getBoundingClientRect().top + window.scrollY - 90, 0),
+                    behavior: 'smooth',
+                });
+            };
+
+            const showStep = function (step, shouldScroll = false) {
+                currentStep = Math.max(1, Math.min(maxStep, step));
+
+                stepSections.forEach(function (section) {
+                    const sectionStep = Number(section.dataset.step || 0);
+                    section.classList.toggle('is-active', sectionStep === currentStep);
+                });
+
+                stepIndicators.forEach(function (item) {
+                    const itemStep = Number(item.dataset.stepperItem || 0);
+                    item.classList.toggle('is-active', itemStep === currentStep);
+                });
+
+                if (wizardStepInput) {
+                    wizardStepInput.value = String(currentStep);
+                }
+
+                if (stageInput) {
+                    stageInput.value = currentStep === 5 ? 'proof' : 'create';
+                }
+
+                if (shouldScroll) {
+                    scrollToFormTop();
+                }
+            };
+
+            const validateCurrentStep = function () {
+                if (currentStep === 1) {
+                    if (!donationProgramSelect || !donationProgramSelect.value) {
+                        donationProgramSelect?.focus();
+                        return false;
+                    }
+                }
+
+                if (currentStep === 2) {
+                    const donorNameInput = document.getElementById('donation-name');
+                    const donorWhatsappInput = document.getElementById('donation-whatsapp');
+
+                    if (!donorNameInput || !donorNameInput.value.trim()) {
+                        donorNameInput?.focus();
+                        return false;
+                    }
+
+                    if (!donorWhatsappInput || !donorWhatsappInput.value.trim()) {
+                        donorWhatsappInput?.focus();
+                        return false;
+                    }
+                }
+
+                if (currentStep === 3) {
+                    if (!amountInput || !getAmountDigits()) {
+                        amountInput?.focus();
+                        return false;
+                    }
+                }
+
+                if (currentStep === 4) {
+                    const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked');
+
+                    if (!selectedPaymentMethod) {
+                        paymentOptions[0]?.focus();
+                        return false;
+                    }
+                }
+
+                return true;
             };
 
             const renderProgramPreview = function (selectedSlug) {
@@ -1071,6 +1417,24 @@
                 }
             });
 
+            stepNextButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    if (!validateCurrentStep()) {
+                        return;
+                    }
+
+                    const targetStep = Number(this.dataset.nextStep || currentStep + 1);
+                    showStep(targetStep, true);
+                });
+            });
+
+            stepBackButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    const targetStep = Number(this.dataset.backStep || currentStep - 1);
+                    showStep(targetStep, true);
+                });
+            });
+
             if (proofInput && proofBox && proofText) {
                 proofInput.addEventListener('change', function () {
                     const fileName = this.files && this.files.length ? this.files[0].name : '';
@@ -1105,6 +1469,35 @@
 
                 syncAmountPresets();
             }
+
+            if (form) {
+                form.addEventListener('submit', function (event) {
+                    if (stageInput && stageInput.value === 'proof') {
+                        if (!proofInput || !proofInput.files || !proofInput.files.length) {
+                            event.preventDefault();
+                            proofInput?.focus();
+                            return;
+                        }
+
+                        if (wizardStepInput) {
+                            wizardStepInput.value = '5';
+                        }
+
+                        return;
+                    }
+
+                    if (!validateCurrentStep()) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    if (wizardStepInput) {
+                        wizardStepInput.value = '4';
+                    }
+                });
+            }
+
+            showStep(currentStep);
         });
     </script>
 </body>

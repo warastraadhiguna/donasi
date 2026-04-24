@@ -55,9 +55,27 @@ Route::get('/donasi', function () {
         $selectedProgram = null;
     }
 
+    $pendingDonation = null;
+    $pendingDonationId = session('pending_donation_id');
+
+    if (filled($pendingDonationId)) {
+        $pendingDonation = DonationDetail::query()
+            ->with('donationProgram')
+            ->whereKey($pendingDonationId)
+            ->where('input_source', 'website')
+            ->where('is_verified', false)
+            ->whereNull('payment_proof_path')
+            ->first();
+
+        if ($pendingDonation === null) {
+            session()->forget('pending_donation_id');
+        }
+    }
+
     return view('donate', [
         'programs' => $programs,
         'selectedProgram' => $selectedProgram,
+        'pendingDonation' => $pendingDonation,
     ]);
 })->name('donate.page');
 
@@ -66,6 +84,53 @@ Route::post('/donasi', function (Request $request) {
 
     if (filled(HmiProfile::current()->qris_image_url)) {
         $availablePaymentMethods[] = 'QRIS';
+    }
+    $stage = $request->input('stage', 'create');
+
+    if ($stage === 'proof') {
+        $validator = Validator::make($request->all(), [
+            'payment_proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
+        ], [
+            'payment_proof.required' => 'Bukti pembayaran wajib diupload.',
+        ]);
+
+        $validator->validate();
+
+        $pendingDonationId = session('pending_donation_id');
+
+        if (blank($pendingDonationId)) {
+            return redirect()
+                ->route('donate.page')
+                ->withErrors(['payment_proof' => 'Sesi donasi tidak ditemukan. Silakan isi data donasi lagi.']);
+        }
+
+        $donation = DonationDetail::query()
+            ->with('donationProgram')
+            ->whereKey($pendingDonationId)
+            ->where('input_source', 'website')
+            ->where('is_verified', false)
+            ->first();
+
+        if ($donation === null) {
+            session()->forget('pending_donation_id');
+
+            return redirect()
+                ->route('donate.page')
+                ->withErrors(['payment_proof' => 'Data donasi tidak ditemukan. Silakan isi data donasi lagi.']);
+        }
+
+        $proofPath = $request->file('payment_proof')->store('donation-proofs', 'public');
+
+        $donation->update([
+            'payment_proof_path' => $proofPath,
+            'note' => 'Dikirim dari landing page (bukti bayar sudah diupload).',
+        ]);
+
+        session()->forget('pending_donation_id');
+
+        return redirect()
+            ->route('donate.page', ['program' => $donation->donationProgram?->slug])
+            ->with('donation_submitted', 'Data donasi dan bukti pembayaran berhasil dikirim. Tim admin akan memverifikasi terlebih dahulu.');
     }
 
     $validator = Validator::make($request->all(), [
@@ -78,11 +143,9 @@ Route::post('/donasi', function (Request $request) {
         'donation_name' => ['required', 'string', 'max:255'],
         'donation_whatsapp' => ['required', 'string', 'max:255'],
         'payment_method' => ['required', Rule::in($availablePaymentMethods)],
-        'payment_proof' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf', 'max:10240'],
     ], [
         'program.required' => 'Ruang donasi wajib dipilih.',
         'payment_method.required' => 'Metode pembayaran wajib dipilih.',
-        'payment_proof.required' => 'Bukti pembayaran wajib diupload.',
     ]);
 
     $validator->after(function ($validator) use ($request): void {
@@ -101,26 +164,27 @@ Route::post('/donasi', function (Request $request) {
         ->firstOrFail();
 
     $amount = (int) preg_replace('/\D+/', '', (string) $validated['amount']);
-    $proofPath = $request->file('payment_proof')->store('donation-proofs', 'public');
 
-    DonationDetail::query()->create([
+    $donation = DonationDetail::query()->create([
         'donation_program_id' => $program->id,
         'donor_name' => $validated['donation_name'],
         'donor_whatsapp' => $validated['donation_whatsapp'],
         'amount' => $amount,
         'donated_at' => now()->toDateString(),
         'payment_method' => $validated['payment_method'],
-        'payment_proof_path' => $proofPath,
+        'payment_proof_path' => null,
         'input_source' => 'website',
-        'note' => 'Dikirim dari landing page.',
+        'note' => 'Dikirim dari landing page (menunggu bukti bayar).',
         'is_verified' => false,
         'verified_at' => null,
         'verified_by' => null,
     ]);
 
+    session(['pending_donation_id' => $donation->id]);
+
     return redirect()
-        ->route('donate.page', ['program' => $program->slug])
-        ->with('donation_submitted', 'Data donasi berhasil dikirim. Tim admin akan memeriksa bukti pembayaran terlebih dahulu.');
+        ->route('donate.page', ['step' => 'proof', 'program' => $program->slug])
+        ->with('donation_pending', 'Data donasi awal sudah tersimpan. Lanjutkan kirim bukti pembayaran.');
 });
 
 Route::get('/galeri', function () {
@@ -144,8 +208,8 @@ Route::get('/galeri', function () {
                             return [
                                 'type' => 'video',
                                 'src' => $item,
-                                'thumb' => $data['hero_image'],
-                                'poster' => $data['hero_image'],
+                                'thumb' => null,
+                                'poster' => null,
                             ];
                         }
 
@@ -153,7 +217,7 @@ Route::get('/galeri', function () {
                             'type' => 'image',
                             'src' => $item,
                             'thumb' => $item,
-                            'poster' => $data['hero_image'],
+                            'poster' => null,
                         ];
                     }
 
@@ -164,8 +228,8 @@ Route::get('/galeri', function () {
                     return [
                         'type' => $item['type'] ?? 'image',
                         'src' => $item['src'],
-                        'thumb' => $item['thumb'] ?? ($item['poster'] ?? $item['src']),
-                        'poster' => $item['poster'] ?? $data['hero_image'],
+                        'thumb' => ($item['type'] ?? 'image') === 'video' ? null : $item['src'],
+                        'poster' => null,
                     ];
                 }))
                 ->filter()
