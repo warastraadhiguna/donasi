@@ -4,31 +4,55 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     @php
+        use Illuminate\Support\Str;
+
         $programUrl = route('program.detail', ['program' => $program['slug']]);
-        $programImageUrl = \Illuminate\Support\Str::startsWith($program['hero_image'], ['http://', 'https://'])
-            ? $program['hero_image']
-            : url($program['hero_image']);
+
+        $rawHeroImage = $program['hero_image'] ?? 'logo.png';
+
+        $programImageUrl = Str::startsWith($rawHeroImage, ['http://', 'https://'])
+            ? $rawHeroImage
+            : asset(ltrim($rawHeroImage, '/'));
+
+        $programTitle = $hmiProfile->organization_name . ' | ' . $program['title'];
+        $programDescription = strip_tags($program['summary'] ?? 'Program donasi Hosana Ministry Indonesia');
+
+        $imageExtension = strtolower(pathinfo(parse_url($programImageUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
+
+        $ogImageType = match ($imageExtension) {
+            'png' => 'image/png',
+            'webp' => 'image/webp',
+            'gif' => 'image/gif',
+            default => 'image/jpeg',
+        };
     @endphp
-    <meta name="description" content="{{ $program['summary'] }}">
+
+    <title>{{ $programTitle }}</title>
+
+    <meta name="description" content="{{ $programDescription }}">
     <meta name="author" content="{{ $hmiProfile->organization_name }}">
     <link rel="canonical" href="{{ $programUrl }}">
 
-    <meta property="og:type" content="article">
+    <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ $hmiProfile->organization_name }}">
-    <meta property="og:title" content="{{ $hmiProfile->organization_name }} | {{ $program['title'] }}">
-    <meta property="og:description" content="{{ $program['summary'] }}">
+    <meta property="og:title" content="{{ $programTitle }}">
+    <meta property="og:description" content="{{ $programDescription }}">
     <meta property="og:url" content="{{ $programUrl }}">
     <meta property="og:image" content="{{ $programImageUrl }}">
     <meta property="og:image:secure_url" content="{{ $programImageUrl }}">
+    <meta property="og:image:type" content="{{ $ogImageType }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="{{ $program['title'] }}">
+    <meta property="og:updated_time" content="{{ now()->timestamp }}">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $hmiProfile->organization_name }} | {{ $program['title'] }}">
-    <meta name="twitter:description" content="{{ $program['summary'] }}">
+    <meta name="twitter:title" content="{{ $programTitle }}">
+    <meta name="twitter:description" content="{{ $programDescription }}">
     <meta name="twitter:image" content="{{ $programImageUrl }}">
 
-    <title>{{ $hmiProfile->organization_name }} | {{ $program['title'] }}</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -71,7 +95,7 @@
         }
 
         .news-detail-header-section {
-            background: url("{{ $program['hero_image'] }}") center center / cover no-repeat;
+            background: url("{{ $programImageUrl }}") center center / cover no-repeat;
             min-height: 340px;
         }
 
