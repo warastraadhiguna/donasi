@@ -4,8 +4,30 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @php
+        $programUrl = route('program.detail', ['program' => $program['slug']]);
+        $programImageUrl = \Illuminate\Support\Str::startsWith($program['hero_image'], ['http://', 'https://'])
+            ? $program['hero_image']
+            : url($program['hero_image']);
+    @endphp
     <meta name="description" content="{{ $program['summary'] }}">
     <meta name="author" content="{{ $hmiProfile->organization_name }}">
+    <link rel="canonical" href="{{ $programUrl }}">
+
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ $hmiProfile->organization_name }}">
+    <meta property="og:title" content="{{ $hmiProfile->organization_name }} | {{ $program['title'] }}">
+    <meta property="og:description" content="{{ $program['summary'] }}">
+    <meta property="og:url" content="{{ $programUrl }}">
+    <meta property="og:image" content="{{ $programImageUrl }}">
+    <meta property="og:image:secure_url" content="{{ $programImageUrl }}">
+    <meta property="og:image:alt" content="{{ $program['title'] }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $hmiProfile->organization_name }} | {{ $program['title'] }}">
+    <meta name="twitter:description" content="{{ $program['summary'] }}">
+    <meta name="twitter:image" content="{{ $programImageUrl }}">
+
     <title>{{ $hmiProfile->organization_name }} | {{ $program['title'] }}</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
