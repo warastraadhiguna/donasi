@@ -183,6 +183,7 @@
         }
         .program-card-actions {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             padding: 0 18px 18px;
         }
@@ -195,6 +196,16 @@
         }
         .program-card-actions .custom-btn {
             display: inline-block;
+        }
+        .program-card-actions .share-whatsapp-btn {
+            flex-basis: 100%;
+            color: #128c7e;
+            border-color: rgba(18, 140, 126, 0.55);
+        }
+        .program-card-actions .share-whatsapp-btn:hover {
+            color: #fff;
+            background: #128c7e;
+            border-color: #128c7e;
         }
         .about-balance-row {
             align-items: flex-start;
@@ -761,6 +772,9 @@
                                     <div class="program-card-actions">
                                         <a href="{{ route('program.detail', $program) }}" class="custom-btn custom-border-btn btn">Lihat Detail</a>
                                         <a href="{{ url('/donasi?program=' . $program->slug) }}" class="custom-btn btn">Bantu Sekarang</a>
+                                        <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program->title . ': ' . route('program.detail', $program)) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi-whatsapp me-1"></i>Share ke WhatsApp
+                                        </a>
                                     </div>
                                 </div>
                             </div>

@@ -112,8 +112,29 @@
             min-height: 5.5rem;
         }
 
-        .donation-card .custom-btn {
+        .donation-card .donation-card-actions {
             margin-top: auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .donation-card .donation-card-actions .btn {
+            flex: 1 1 145px;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .donation-card .share-whatsapp-btn {
+            flex-basis: 100%;
+            color: #128c7e;
+            border-color: rgba(18, 140, 126, 0.55);
+        }
+
+        .donation-card .share-whatsapp-btn:hover {
+            color: #fff;
+            background: #128c7e;
+            border-color: #128c7e;
         }
 
         @media screen and (max-width: 991px) {
@@ -281,7 +302,13 @@
                                         <p class="mb-1"><strong>Target:</strong> {{ $program->formatted_target_amount }}</p>
                                         <p class="mb-0"><strong>{{ $program->remaining_days_label }}</strong></p>
                                     </div>
-                                    <a href="{{ route('program.detail', $program) }}" class="custom-btn btn mt-3">Lihat Detail</a>
+                                    <div class="donation-card-actions mt-3">
+                                        <a href="{{ route('program.detail', $program) }}" class="custom-btn btn">Lihat Detail</a>
+                                        <a href="{{ url('/donasi?program=' . $program->slug) }}" class="custom-btn custom-border-btn btn">Bantu Sekarang</a>
+                                        <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program->title . ': ' . route('program.detail', $program)) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi-whatsapp me-1"></i>Share ke WhatsApp
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

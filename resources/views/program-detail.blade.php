@@ -123,6 +123,17 @@
             min-width: 180px;
         }
 
+        .detail-cta .share-whatsapp-btn {
+            color: #128c7e;
+            border-color: rgba(18, 140, 126, 0.55);
+        }
+
+        .detail-cta .share-whatsapp-btn:hover {
+            color: #fff;
+            background: #128c7e;
+            border-color: #128c7e;
+        }
+
         .program-gallery-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -361,6 +372,9 @@
                                 <div class="detail-cta">
                                     <a href="{{ url('/donasi?program=' . $program['slug']) }}" class="custom-btn btn">Bantu Sekarang</a>
                                     <a href="/ruang-donasi" class="custom-btn custom-border-btn btn">Lihat Program Lain</a>
+                                    <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program['title'] . ': ' . route('program.detail', ['program' => $program['slug']])) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                                        <i class="bi-whatsapp me-1"></i>Share ke WhatsApp
+                                    </a>
                                 </div>
 
                                 <div class="social-share border-top mt-5 py-4 d-flex flex-wrap align-items-center">
