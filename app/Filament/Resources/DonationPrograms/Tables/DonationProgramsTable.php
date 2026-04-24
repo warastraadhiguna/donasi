@@ -23,10 +23,10 @@ class DonationProgramsTable
                     ->label('Judul')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('slug')
-                    ->searchable()
-                    ->copyable()
-                    ->toggleable(),
+                // TextColumn::make('slug')
+                //     ->searchable()
+                //     ->copyable()
+                //     ->toggleable(),
                 TextColumn::make('status')
                     ->badge()
                     ->searchable(),
