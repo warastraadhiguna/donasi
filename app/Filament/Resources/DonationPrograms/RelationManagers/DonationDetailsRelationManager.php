@@ -109,6 +109,11 @@ class DonationDetailsRelationManager extends RelationManager
             ])
             ->defaultSort('donated_at', 'desc')
             ->headerActions([
+                Action::make('refresh')
+                    ->label('Refresh')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('gray')
+                    ->action(fn (): null => null),
                 CreateAction::make()
                     ->mutateDataUsing(function (array $data): array {
                         $data['input_source'] = 'admin';

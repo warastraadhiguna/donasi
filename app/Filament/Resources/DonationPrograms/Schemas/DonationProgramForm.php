@@ -42,7 +42,21 @@ class DonationProgramForm
                                             ->native(false),
                                         TextInput::make('target_amount')
                                             ->label('Target Donasi')
-                                            ->numeric()
+                                            ->inputMode('numeric')
+                                            ->formatStateUsing(fn ($state): ?string => filled($state)
+                                                ? number_format((int) preg_replace('/\D+/', '', (string) $state), 0, ',', '.')
+                                                : null)
+                                            ->live(debounce: 300)
+                                            ->afterStateUpdatedJs(<<<'JS'
+                                                const digits = String($state ?? '').replace(/\D/g, '')
+                                                const formatted = digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+
+                                                if ($state !== formatted) {
+                                                    $set('target_amount', formatted)
+                                                }
+                                            JS)
+                                            ->stripCharacters('.')
+                                            ->rule('integer')
                                             ->minValue(0)
                                             ->prefix('Rp')
                                             ->required(),
