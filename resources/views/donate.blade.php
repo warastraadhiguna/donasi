@@ -575,36 +575,31 @@
 
         .donation-stepper {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(5, 18px);
+            justify-content: center;
+            gap: 14px;
             margin-bottom: 24px;
         }
 
         .donation-stepper-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            min-height: 52px;
-            padding: 10px 12px;
-            border-radius: 14px;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            border-radius: 999px;
             background: #f4f8fa;
             border: 1px solid rgba(220, 232, 236, 0.92);
             color: var(--p-color);
-            font-size: 13px;
-            font-weight: 600;
         }
 
         .donation-stepper-item span {
-            width: 24px;
-            height: 24px;
-            display: grid;
-            place-items: center;
+            width: 8px;
+            height: 8px;
+            display: block;
             border-radius: 999px;
-            background: #fff;
-            border: 1px solid rgba(220, 232, 236, 0.92);
-            color: var(--dark-color);
-            font-size: 12px;
-            font-weight: 700;
+            background: rgba(113, 123, 133, 0.45);
         }
 
         .donation-stepper-item.is-active {
@@ -615,8 +610,6 @@
 
         .donation-stepper-item.is-active span {
             background: var(--secondary-color);
-            border-color: var(--secondary-color);
-            color: #fff;
         }
 
         .donation-step {
@@ -662,7 +655,8 @@
             }
 
             .donation-stepper {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(5, 18px);
+                gap: 12px;
             }
         }
 
@@ -682,22 +676,18 @@
             }
 
             .donation-stepper {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(5, 16px);
                 gap: 8px;
             }
 
             .donation-stepper-item {
-                min-height: 48px;
-                gap: 8px;
-                padding: 8px 10px;
-                border-radius: 12px;
-                font-size: 12px;
+                width: 16px;
+                height: 16px;
             }
 
             .donation-stepper-item span {
-                width: 22px;
-                height: 22px;
-                font-size: 11px;
+                width: 7px;
+                height: 7px;
             }
 
             .program-preview-card {
@@ -910,11 +900,11 @@
                             <h3 class="mb-4">Form Donasi HMI Peduli</h3>
 
                             <div class="donation-stepper">
-                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="1"><span>1</span>Ruang Donasi</div>
-                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="2"><span>2</span>Data Donatur</div>
-                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="3"><span>3</span>Nominal</div>
-                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="4"><span>4</span>Metode Bayar</div>
-                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="5"><span>5</span>Bukti Bayar</div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="1" aria-label="Ruang Donasi"><span aria-hidden="true"></span></div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="2" aria-label="Data Donatur"><span aria-hidden="true"></span></div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="3" aria-label="Nominal"><span aria-hidden="true"></span></div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="4" aria-label="Metode Bayar"><span aria-hidden="true"></span></div>
+                                <div class="donation-stepper-item js-stepper-item" data-stepper-item="5" aria-label="Bukti Bayar"><span aria-hidden="true"></span></div>
                             </div>
 
                             <section class="donation-step js-donation-step" data-step="1">
@@ -977,7 +967,7 @@
 
                                             <div class="wizard-actions">
                                                 <span></span>
-                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="2">Next</button>
+                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="2">Selanjutnya</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1006,8 +996,8 @@
                                                 </div>
                                             </div>
                                             <div class="wizard-actions">
-                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="1">Back</button>
-                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="3">Next</button>
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="1">Kembali</button>
+                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="3">Selanjutnya</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1059,8 +1049,8 @@
                                                 <div class="field-error">{{ $message }}</div>
                                             @enderror
                                             <div class="wizard-actions">
-                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="2">Back</button>
-                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="4">Next</button>
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="2">Kembali</button>
+                                                <button type="button" class="custom-btn btn js-step-next" data-next-step="4">Selanjutnya</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1114,8 +1104,8 @@
                                             <p class="proof-upload-note">Saat klik Next, data donasi awal langsung tersimpan ke keuangan tanpa bukti bayar.</p>
 
                                             <div class="wizard-actions">
-                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="3">Back</button>
-                                                <button type="submit" class="custom-btn btn" id="btn-save-initial">Next: Kirim Bukti Bayar</button>
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="3">Kembali</button>
+                                                <button type="submit" class="custom-btn btn" id="btn-save-initial">Selanjutnya: Kirim Bukti Bayar</button>
                                             </div>
                                         </div>
                                     </div>
@@ -1154,7 +1144,7 @@
                                             @enderror
 
                                             <div class="wizard-actions">
-                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="4">Back</button>
+                                                <button type="button" class="custom-btn custom-border-btn btn js-step-back" data-back-step="4">Kembali</button>
                                                 <button type="submit" class="custom-btn btn" id="btn-submit-proof">Simpan Bukti Bayar</button>
                                             </div>
                                         </div>
