@@ -188,6 +188,17 @@ class DonationProgram extends Model
         return Storage::disk('public')->url($trimmedPath);
     }
 
+    protected function isVideoPath(?string $path): bool
+    {
+        if (blank($path)) {
+            return false;
+        }
+
+        $extension = strtolower(pathinfo(parse_url((string) $path, PHP_URL_PATH) ?: (string) $path, PATHINFO_EXTENSION));
+
+        return in_array($extension, ['mp4', 'webm', 'ogg', 'mov'], true);
+    }
+
     public function toViewData(): array
     {
         return [
@@ -209,16 +220,28 @@ class DonationProgram extends Model
             'gallery' => collect($this->gallery)
                 ->map(function (mixed $item): mixed {
                     if (is_string($item)) {
-                        return $this->resolveMediaUrl($item);
+                        $src = $this->resolveMediaUrl($item);
+
+                        if ($this->isVideoPath($item)) {
+                            return [
+                                'type' => 'video',
+                                'src' => $src,
+                            ];
+                        }
+
+                        return $src;
                     }
 
                     if (! is_array($item)) {
                         return null;
                     }
 
+                    $src = (string) ($item['src'] ?? '');
+                    $type = (($item['type'] ?? 'image') === 'video' || $this->isVideoPath($src)) ? 'video' : 'image';
+
                     return [
-                        'type' => $item['type'] ?? 'image',
-                        'src' => $this->resolveMediaUrl((string) ($item['src'] ?? '')),
+                        'type' => $type,
+                        'src' => $this->resolveMediaUrl($src),
                         'thumb' => isset($item['thumb']) ? $this->resolveMediaUrl((string) $item['thumb']) : null,
                         'poster' => isset($item['poster']) ? $this->resolveMediaUrl((string) $item['poster']) : null,
                     ];

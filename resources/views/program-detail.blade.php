@@ -307,15 +307,20 @@
 
 <body>
     @php
-        $mediaItems = collect(array_merge([$program['hero_image']], $program['gallery']))
-            ->map(function ($item) use ($program) {
-                if (is_string($item)) {
-                    $extension = strtolower(pathinfo($item, PATHINFO_EXTENSION));
+        $isVideoSource = fn (string $source): bool => in_array(
+            strtolower(pathinfo(parse_url($source, PHP_URL_PATH) ?: $source, PATHINFO_EXTENSION)),
+            ['mp4', 'webm', 'ogg', 'mov'],
+            true,
+        );
 
-                    if (in_array($extension, ['mp4', 'webm', 'ogg'], true)) {
+        $mediaItems = collect(array_merge([$program['hero_image']], $program['gallery']))
+            ->map(function ($item) use ($isVideoSource) {
+                if (is_string($item)) {
+                    if ($isVideoSource($item)) {
                         return [
                             'type' => 'video',
                             'src' => $item,
+                            'poster' => null,
                         ];
                     }
 
@@ -326,12 +331,14 @@
                     ];
                 }
 
-                $type = $item['type'] ?? 'image';
+                $src = $item['src'] ?? '';
+                $type = (($item['type'] ?? 'image') === 'video' || $isVideoSource($src)) ? 'video' : 'image';
 
                 return [
                     'type' => $type,
-                    'src' => $item['src'] ?? '',
-                    'thumb' => $type === 'video' ? null : ($item['src'] ?? ''),
+                    'src' => $src,
+                    'thumb' => $type === 'video' ? null : ($item['thumb'] ?? $src),
+                    'poster' => $item['poster'] ?? null,
                 ];
             })
             ->values();
@@ -463,7 +470,7 @@
                                 @foreach ($mediaItems as $index => $media)
                                     <button type="button" class="program-gallery-thumb js-gallery-thumb {{ $media['type'] === 'video' ? 'is-video' : '' }}" data-index="{{ $index }}" data-bs-toggle="modal" data-bs-target="#programGalleryModal" aria-label="Lihat media {{ $index + 1 }}">
                                         @if ($media['type'] === 'video')
-                                            <video muted playsinline preload="metadata" aria-hidden="true">
+                                            <video muted playsinline preload="metadata" @if(filled($media['poster'] ?? null)) poster="{{ $media['poster'] }}" @endif aria-hidden="true">
                                                 <source src="{{ $media['src'] }}">
                                             </video>
                                             <span class="program-gallery-video-icon bi-play-fill" aria-hidden="true"></span>
@@ -514,7 +521,7 @@
                             @foreach ($mediaItems as $index => $media)
                                 <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                                     @if ($media['type'] === 'video')
-                                        <video controls preload="metadata">
+                                        <video controls preload="metadata" playsinline @if(filled($media['poster'] ?? null)) poster="{{ $media['poster'] }}" @endif>
                                             <source src="{{ $media['src'] }}">
                                             Browser kamu belum mendukung video.
                                         </video>
