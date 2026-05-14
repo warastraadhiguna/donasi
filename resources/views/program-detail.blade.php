@@ -135,6 +135,13 @@
             line-height: 1;
         }
 
+        .news-block-body p,
+        .news-block-body blockquote,
+        .program-description-paragraph {
+            text-align: justify;
+            white-space: pre-line;
+        }
+
         .program-sidebar-card {
             background: #fff;
             border-radius: 24px;
@@ -412,7 +419,13 @@
                                     <p><strong>{{ $program['summary'] }}</strong></p>
                                     <p>{{ $program['lead'] }}</p>
 
-                                    <blockquote>{{ $program['quote'] }}</blockquote>
+                                    @foreach ($program['description'] as $paragraph)
+                                        <p class="program-description-paragraph">{{ $paragraph }}</p>
+                                    @endforeach
+
+                                    @if (filled($program['quote']))
+                                        <blockquote>{{ $program['quote'] }}</blockquote>
+                                    @endif
                                 </div>
 
                                 <div class="detail-cta">
