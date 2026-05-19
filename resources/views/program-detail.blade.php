@@ -54,7 +54,10 @@
         };
 
         $programUrl = route('program.detail', ['program' => $program['slug']]);
-        $programShareUrl = route('program.share', ['program' => $program['slug']]);
+        $staticSharePath = 'share-preview/' . $program['slug'] . '.html';
+        $programShareUrl = is_file(public_path($staticSharePath))
+            ? url($staticSharePath)
+            : route('program.share', ['program' => $program['slug']]);
 
         $rawHeroImage = $program['hero_image'] ?? 'logo.png';
 
