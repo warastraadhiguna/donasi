@@ -4,11 +4,16 @@ use App\Models\ContactMessage;
 use App\Models\DonationDetail;
 use App\Models\DonationProgram;
 use App\Models\HmiProfile;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 Route::get('/', function () {
     return view('home', [
@@ -294,4 +299,12 @@ Route::get('/share/{program:slug}', function (DonationProgram $program) {
         ])
         ->header('Cache-Control', 'public, max-age=300')
         ->header('X-Robots-Tag', 'index, follow');
-})->name('program.share');
+})
+    ->withoutMiddleware([
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        StartSession::class,
+        ShareErrorsFromSession::class,
+        VerifyCsrfToken::class,
+    ])
+    ->name('program.share');

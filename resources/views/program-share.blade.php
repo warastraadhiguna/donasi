@@ -52,9 +52,12 @@
             return is_file($publicPath) ? $publicPath : null;
         };
 
+        $staticOgPath = 'og/' . $program['slug'] . '.jpg';
+        $staticOgImage = is_file(public_path($staticOgPath)) ? $staticOgPath : null;
+
         $programUrl = route('program.detail', ['program' => $program['slug']]);
         $programShareUrl = url()->full();
-        $programImageUrl = $absoluteSocialUrl($program['hero_image'] ?? 'logo.png');
+        $programImageUrl = $absoluteSocialUrl($staticOgImage ?? ($program['hero_image'] ?? 'logo.png'));
         $programImageSecureUrl = Str::startsWith($programImageUrl, 'http://')
             ? 'https://' . Str::after($programImageUrl, 'http://')
             : $programImageUrl;
