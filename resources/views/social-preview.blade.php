@@ -51,18 +51,10 @@
             return is_file($publicPath) ? $publicPath : null;
         };
 
-        $versionedSocialUrl = function (string $url, ?string $localPath = null) use ($encodeSocialUrl): string {
-            $version = $localPath && is_file($localPath)
-                ? (string) filemtime($localPath)
-                : now()->format('YmdH');
-
-            return $encodeSocialUrl($url . (str_contains($url, '?') ? '&' : '?') . 'v=' . $version);
-        };
-
         $programUrl = route('program.detail', ['program' => $program['slug']]);
         $baseProgramImageUrl = $absoluteSocialUrl($program['hero_image'] ?? 'logo.png');
         $imagePath = $localPublicPath($baseProgramImageUrl);
-        $programImageUrl = $versionedSocialUrl($baseProgramImageUrl, $imagePath);
+        $programImageUrl = $baseProgramImageUrl;
         $imageSize = $imagePath ? @getimagesize($imagePath) : null;
         $imageExtension = strtolower(pathinfo(parse_url($baseProgramImageUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
 
