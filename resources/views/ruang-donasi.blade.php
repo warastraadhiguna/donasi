@@ -305,7 +305,7 @@
                                     <div class="donation-card-actions mt-3">
                                         <a href="{{ route('program.detail', $program) }}" class="custom-btn btn">Lihat Detail</a>
                                         <a href="{{ url('/donasi?program=' . $program->slug) }}" class="custom-btn custom-border-btn btn">Bantu Sekarang</a>
-                                        <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program->title . ': ' . (($program->slug === 'kebutuhan-air-bersih-asrama-5-roti-2-ikan') ? 'https://share.hosana-ministry-indonesia.com/' : (is_file(public_path('share-preview/' . $program->slug . '.html')) ? url('share-preview/' . $program->slug . '.html') : route('program.share', $program)))) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program->title . ': ' . (($program->slug === 'kebutuhan-air-bersih-asrama-5-roti-2-ikan') ? 'https://share.hosana-ministry-indonesia.com/kebutuhan-air-bersih-asrama-5-roti-2-ikan.html' : (is_file(public_path('share-preview/' . $program->slug . '.html')) ? url('share-preview/' . $program->slug . '.html') : route('program.share', $program)))) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
                                             <i class="bi-whatsapp me-1"></i>Share ke WhatsApp
                                         </a>
                                     </div>
