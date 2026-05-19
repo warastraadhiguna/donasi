@@ -53,7 +53,7 @@
         };
 
         $programUrl = route('program.detail', ['program' => $program['slug']]);
-        $programShareUrl = route('program.share', ['program' => $program['slug']]);
+        $programShareUrl = url()->full();
         $programImageUrl = $absoluteSocialUrl($program['hero_image'] ?? 'logo.png');
         $programImageSecureUrl = Str::startsWith($programImageUrl, 'http://')
             ? 'https://' . Str::after($programImageUrl, 'http://')
