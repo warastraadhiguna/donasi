@@ -800,7 +800,7 @@
                                     <div class="program-card-actions">
                                         <a href="{{ route('program.detail', $program) }}" class="custom-btn custom-border-btn btn">Lihat Detail</a>
                                         <a href="{{ url('/donasi?program=' . $program->slug) }}" class="custom-btn btn">Bantu Sekarang</a>
-                                        <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program->title . ': ' . route('program.detail', $program)) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                                        <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program->title . ': ' . route('program.share', $program)) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
                                             <i class="bi-whatsapp me-1"></i>Share ke WhatsApp
                                         </a>
                                     </div>

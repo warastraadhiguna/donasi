@@ -284,3 +284,14 @@ Route::get('/ruang-donasi/{program:slug}', function (DonationProgram $program) {
         'program' => $program->toViewData(),
     ]);
 })->name('program.detail');
+
+Route::get('/share/{program:slug}', function (DonationProgram $program) {
+    $program->loadSum('verifiedDonationDetails', 'amount');
+
+    return response()
+        ->view('program-share', [
+            'program' => $program->toViewData(),
+        ])
+        ->header('Cache-Control', 'public, max-age=300')
+        ->header('X-Robots-Tag', 'index, follow');
+})->name('program.share');

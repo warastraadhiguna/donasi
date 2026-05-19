@@ -54,6 +54,7 @@
         };
 
         $programUrl = route('program.detail', ['program' => $program['slug']]);
+        $programShareUrl = route('program.share', ['program' => $program['slug']]);
 
         $rawHeroImage = $program['hero_image'] ?? 'logo.png';
 
@@ -66,8 +67,8 @@
 
         $programTitle = $hmiProfile->organization_name . ' | ' . $program['title'];
         $programDescription = Str::limit(strip_tags($program['summary'] ?? 'Program donasi Hosana Ministry Indonesia'), 180);
-        $shareText = 'Yuk bantu program ' . $program['title'] . ': ' . $programUrl;
-        $encodedProgramUrl = rawurlencode($programUrl);
+        $shareText = 'Yuk bantu program ' . $program['title'] . ': ' . $programShareUrl;
+        $encodedProgramUrl = rawurlencode($programShareUrl);
         $encodedProgramTitle = rawurlencode($programTitle);
         $encodedShareText = rawurlencode($shareText);
 
@@ -502,7 +503,7 @@
                                 <div class="detail-cta">
                                     <a href="{{ url('/donasi?program=' . $program['slug']) }}" class="custom-btn btn">Bantu Sekarang</a>
                                     <a href="/ruang-donasi" class="custom-btn custom-border-btn btn">Lihat Program Lain</a>
-                                    <a href="https://wa.me/?text={{ rawurlencode('Yuk bantu program ' . $program['title'] . ': ' . route('program.detail', ['program' => $program['slug']])) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
+                                    <a href="https://wa.me/?text={{ rawurlencode($shareText) }}" class="custom-btn custom-border-btn btn share-whatsapp-btn" target="_blank" rel="noopener noreferrer">
                                         <i class="bi-whatsapp me-1"></i>Share ke WhatsApp
                                     </a>
                                 </div>
