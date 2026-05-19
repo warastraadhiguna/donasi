@@ -4,9 +4,37 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="HMI Peduli adalah gerakan charity untuk menghimpun donasi dan relawan bagi pendidikan, pangan, kesehatan, dan aksi kemanusiaan.">
+
+    @php
+        $homeUrl = url('/');
+        $homeTitle = $hmiProfile->organization_name;
+        $homeDescription = $websiteContent->hero_description
+            ?: 'HMI Peduli adalah gerakan charity untuk menghimpun donasi dan relawan bagi pendidikan, pangan, kesehatan, dan aksi kemanusiaan.';
+        $homeImageUrl = $websiteContent->hero_background_image_url ?: asset('logo.png');
+    @endphp
+
+    <meta name="description" content="{{ $homeDescription }}">
     <meta name="author" content="{{ $hmiProfile->organization_name }}">
-    <title>{{ $hmiProfile->organization_name }}</title>
+    <link rel="canonical" href="{{ $homeUrl }}">
+    <link rel="image_src" href="{{ $homeImageUrl }}">
+    <meta name="thumbnail" content="{{ $homeImageUrl }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="id_ID">
+    <meta property="og:site_name" content="{{ $hmiProfile->organization_name }}">
+    <meta property="og:title" content="{{ $homeTitle }}">
+    <meta property="og:description" content="{{ $homeDescription }}">
+    <meta property="og:url" content="{{ $homeUrl }}">
+    <meta property="og:image" content="{{ $homeImageUrl }}">
+    <meta property="og:image:secure_url" content="{{ $homeImageUrl }}">
+    <meta property="og:image:alt" content="{{ $hmiProfile->organization_name }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $homeTitle }}">
+    <meta name="twitter:description" content="{{ $homeDescription }}">
+    <meta name="twitter:image" content="{{ $homeImageUrl }}">
+
+    <title>{{ $homeTitle }}</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
