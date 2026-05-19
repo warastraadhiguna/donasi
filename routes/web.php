@@ -6,7 +6,6 @@ use App\Models\DonationProgram;
 use App\Models\HmiProfile;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
@@ -280,30 +279,6 @@ Route::get('/ruang-donasi', function () {
 
 Route::get('/ruang-donasi/{program:slug}', function (DonationProgram $program) {
     $program->loadSum('verifiedDonationDetails', 'amount');
-
-    $crawlerUserAgents = [
-        'facebookexternalhit',
-        'facebot',
-        'facebookbot',
-        'meta-externalagent',
-        'meta-externalfetcher',
-        'instagram',
-        'linkedinbot',
-        'twitterbot',
-        'whatsapp',
-        'telegrambot',
-        'discordbot',
-        'slackbot',
-    ];
-
-    if (Str::contains(Str::lower((string) request()->userAgent()), $crawlerUserAgents)) {
-        return response()
-            ->view('social-preview', [
-                'program' => $program->toViewData(),
-            ])
-            ->header('Cache-Control', 'public, max-age=300')
-            ->header('X-Robots-Tag', 'index, follow');
-    }
 
     return view('program-detail', [
         'program' => $program->toViewData(),
