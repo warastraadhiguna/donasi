@@ -6,7 +6,7 @@ use App\Models\DonationProgram;
 use App\Models\HmiProfile;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Session\Middleware\StartSession;
@@ -305,6 +305,6 @@ Route::get('/share/{program:slug}', function (DonationProgram $program) {
         AddQueuedCookiesToResponse::class,
         StartSession::class,
         ShareErrorsFromSession::class,
-        VerifyCsrfToken::class,
+        PreventRequestForgery::class,
     ])
     ->name('program.share');
