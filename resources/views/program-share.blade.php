@@ -106,13 +106,5 @@
     <h1>{{ $programTitle }}</h1>
     <p>{{ $programDescription }}</p>
     <p><a href="{{ $programUrl }}">Lihat program</a></p>
-
-    <script>
-        const crawlerPattern = /(facebookexternalhit|facebot|facebookbot|meta-externalagent|meta-externalfetcher|twitterbot|linkedinbot|whatsapp|telegrambot|discordbot|slackbot)/i;
-
-        if (!crawlerPattern.test(navigator.userAgent)) {
-            window.location.replace(@json($programUrl));
-        }
-    </script>
 </body>
 </html>
