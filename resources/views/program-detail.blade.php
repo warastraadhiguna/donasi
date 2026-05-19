@@ -53,11 +53,23 @@
             return is_file($publicPath) ? $publicPath : null;
         };
 
+        $versionedSocialUrl = function (string $url, ?string $localPath = null) use ($encodeSocialUrl): string {
+            $version = $localPath && is_file($localPath)
+                ? (string) filemtime($localPath)
+                : now()->format('YmdH');
+
+            $separator = str_contains($url, '?') ? '&' : '?';
+
+            return $encodeSocialUrl($url . $separator . 'v=' . $version);
+        };
+
         $programUrl = route('program.detail', ['program' => $program['slug']]);
 
         $rawHeroImage = $program['hero_image'] ?? 'logo.png';
 
-        $programImageUrl = $absoluteSocialUrl($rawHeroImage);
+        $baseProgramImageUrl = $absoluteSocialUrl($rawHeroImage);
+        $imagePath = $localPublicPath($baseProgramImageUrl);
+        $programImageUrl = $versionedSocialUrl($baseProgramImageUrl, $imagePath);
         $programImageSecureUrl = Str::startsWith($programImageUrl, 'http://')
             ? 'https://' . Str::after($programImageUrl, 'http://')
             : $programImageUrl;
@@ -69,8 +81,8 @@
         $encodedProgramTitle = rawurlencode($programTitle);
         $encodedShareText = rawurlencode($shareText);
 
-        $imageExtension = strtolower(pathinfo(parse_url($programImageUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
-        $imageSize = ($imagePath = $localPublicPath($programImageUrl)) ? @getimagesize($imagePath) : null;
+        $imageExtension = strtolower(pathinfo(parse_url($baseProgramImageUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
+        $imageSize = $imagePath ? @getimagesize($imagePath) : null;
         $ogImageWidth = (int) ($imageSize[0] ?? 1200);
         $ogImageHeight = (int) ($imageSize[1] ?? 630);
 
@@ -87,6 +99,8 @@
     <meta name="description" content="{{ $programDescription }}">
     <meta name="author" content="{{ $hmiProfile->organization_name }}">
     <link rel="canonical" href="{{ $programUrl }}">
+    <link rel="image_src" href="{{ $programImageUrl }}">
+    <meta name="thumbnail" content="{{ $programImageUrl }}">
 
     <meta itemprop="name" content="{{ $programTitle }}">
     <meta itemprop="description" content="{{ $programDescription }}">
