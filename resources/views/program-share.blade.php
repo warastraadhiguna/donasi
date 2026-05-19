@@ -56,26 +56,20 @@
         $staticOgImage = is_file(public_path($staticOgPath)) ? $staticOgPath : null;
 
         $programUrl = route('program.detail', ['program' => $program['slug']]);
-        $programShareUrl = url()->full();
-        $programImageUrl = $absoluteSocialUrl($staticOgImage ?? ($program['hero_image'] ?? 'logo.png'));
+        $programShareUrl = route('program.share', ['program' => $program['slug']]);
+        $programImageUrl = route('program.og-image', ['program' => $program['slug']]);
         $programImageSecureUrl = Str::startsWith($programImageUrl, 'http://')
             ? 'https://' . Str::after($programImageUrl, 'http://')
             : $programImageUrl;
-        $imagePath = $localPublicPath($programImageUrl);
+        $imagePath = $localPublicPath($absoluteSocialUrl($staticOgImage ?? ($program['hero_image'] ?? 'logo.png')));
         $imageSize = $imagePath ? @getimagesize($imagePath) : null;
-        $imageExtension = strtolower(pathinfo(parse_url($programImageUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
 
         $programTitle = $hmiProfile->organization_name . ' | ' . $program['title'];
         $programDescription = Str::limit(strip_tags($program['summary'] ?? 'Program donasi Hosana Ministry Indonesia'), 180);
         $ogImageWidth = (int) ($imageSize[0] ?? 1200);
         $ogImageHeight = (int) ($imageSize[1] ?? 630);
 
-        $ogImageType = match ($imageExtension) {
-            'png' => 'image/png',
-            'webp' => 'image/webp',
-            'gif' => 'image/gif',
-            default => 'image/jpeg',
-        };
+        $ogImageType = 'image/jpeg';
     @endphp
 
     <title>{{ $programTitle }}</title>

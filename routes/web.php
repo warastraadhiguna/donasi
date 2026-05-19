@@ -293,10 +293,14 @@ Route::get('/ruang-donasi/{program:slug}', function (DonationProgram $program) {
 Route::get('/share/{program:slug}', function (DonationProgram $program) {
     $program->loadSum('verifiedDonationDetails', 'amount');
 
+    $html = view('program-share', [
+        'program' => $program->toViewData(),
+    ])->render();
+
     return response()
-        ->view('program-share', [
-            'program' => $program->toViewData(),
-        ])
+        ->make($html)
+        ->header('Content-Type', 'text/html; charset=UTF-8')
+        ->header('Content-Length', (string) strlen($html))
         ->header('Cache-Control', 'public, max-age=300')
         ->header('X-Robots-Tag', 'index, follow');
 })
@@ -308,3 +312,41 @@ Route::get('/share/{program:slug}', function (DonationProgram $program) {
         PreventRequestForgery::class,
     ])
     ->name('program.share');
+
+Route::get('/og-image/{program:slug}/image.jpg', function (DonationProgram $program) {
+    $staticOgPath = public_path('og/' . $program->slug . '.jpg');
+    $imagePath = is_file($staticOgPath) ? $staticOgPath : null;
+
+    if ($imagePath === null) {
+        $viewData = $program->toViewData();
+        $heroPath = parse_url($viewData['hero_image'] ?? '', PHP_URL_PATH);
+        $localHeroPath = filled($heroPath) ? public_path(rawurldecode(ltrim($heroPath, '/'))) : null;
+
+        if (is_string($localHeroPath) && is_file($localHeroPath)) {
+            $imagePath = $localHeroPath;
+        }
+    }
+
+    if ($imagePath === null || ! is_file($imagePath)) {
+        $imagePath = public_path('logo.png');
+    }
+
+    $image = file_get_contents($imagePath);
+
+    abort_if($image === false, 404);
+
+    return response($image)
+        ->header('Content-Type', 'image/jpeg')
+        ->header('Content-Length', (string) strlen($image))
+        ->header('Cache-Control', 'public, max-age=86400')
+        ->header('X-Robots-Tag', 'index, follow')
+        ->header('Accept-Ranges', 'none');
+})
+    ->withoutMiddleware([
+        EncryptCookies::class,
+        AddQueuedCookiesToResponse::class,
+        StartSession::class,
+        ShareErrorsFromSession::class,
+        PreventRequestForgery::class,
+    ])
+    ->name('program.og-image');
