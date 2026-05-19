@@ -53,23 +53,13 @@
             return is_file($publicPath) ? $publicPath : null;
         };
 
-        $versionedSocialUrl = function (string $url, ?string $localPath = null) use ($encodeSocialUrl): string {
-            $version = $localPath && is_file($localPath)
-                ? (string) filemtime($localPath)
-                : now()->format('YmdH');
-
-            $separator = str_contains($url, '?') ? '&' : '?';
-
-            return $encodeSocialUrl($url . $separator . 'v=' . $version);
-        };
-
         $programUrl = route('program.detail', ['program' => $program['slug']]);
 
         $rawHeroImage = $program['hero_image'] ?? 'logo.png';
 
         $baseProgramImageUrl = $absoluteSocialUrl($rawHeroImage);
         $imagePath = $localPublicPath($baseProgramImageUrl);
-        $programImageUrl = $versionedSocialUrl($baseProgramImageUrl, $imagePath);
+        $programImageUrl = $baseProgramImageUrl;
         $programImageSecureUrl = Str::startsWith($programImageUrl, 'http://')
             ? 'https://' . Str::after($programImageUrl, 'http://')
             : $programImageUrl;
