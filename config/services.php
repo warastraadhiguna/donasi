@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'github_preview' => [
+        'base_url' => env('PREVIEW_BASE_URL', 'https://preview.hosana-ministry-indonesia.com'),
+        'owner' => env('GITHUB_PREVIEW_OWNER'),
+        'repo' => env('GITHUB_PREVIEW_REPO'),
+        'branch' => env('GITHUB_PREVIEW_BRANCH', 'main'),
+        'token' => env('GITHUB_PREVIEW_TOKEN'),
+        'publish_on_save' => env('GITHUB_PREVIEW_PUBLISH_ON_SAVE', false),
+    ],
+
 ];

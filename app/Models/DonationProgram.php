@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Policies\DonationProgramPolicy;
+use App\Services\SocialPreviewPublisher;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
@@ -46,6 +47,17 @@ class DonationProgram extends Model
             if (blank($program->slug) && filled($program->title)) {
                 $program->slug = Str::slug($program->title);
             }
+        });
+
+        static::saved(function (self $program): void {
+            if (! config('services.github_preview.publish_on_save')) {
+                return;
+            }
+
+            rescue(
+                fn () => app(SocialPreviewPublisher::class)->publish($program),
+                report: true,
+            );
         });
     }
 
@@ -113,6 +125,17 @@ class DonationProgram extends Model
     public function getHeroImageUrlAttribute(): string
     {
         return $this->resolveMediaUrl($this->hero_image);
+    }
+
+    public function getSocialPreviewUrlAttribute(): string
+    {
+        $baseUrl = (string) config('services.github_preview.base_url');
+
+        if (filled($baseUrl)) {
+            return rtrim($baseUrl, '/') . '/' . $this->slug . '/';
+        }
+
+        return route('program.share', ['program' => $this->slug]);
     }
 
     public function getFormattedTargetAmountAttribute(): string
@@ -217,6 +240,7 @@ class DonationProgram extends Model
                 ->all(),
             'quote' => $this->quote,
             'hero_image' => $this->hero_image_url,
+            'social_preview_url' => $this->social_preview_url,
             'gallery' => collect($this->gallery)
                 ->map(function (mixed $item): mixed {
                     if (is_string($item)) {

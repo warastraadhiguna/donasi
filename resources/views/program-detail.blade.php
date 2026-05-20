@@ -54,13 +54,7 @@
         };
 
         $programUrl = route('program.detail', ['program' => $program['slug']]);
-        $staticShareOverrides = [
-            'kebutuhan-air-bersih-asrama-5-roti-2-ikan' => 'https://share.hosana-ministry-indonesia.com/kebutuhan-air-bersih-asrama-5-roti-2-ikan.html',
-        ];
-        $staticSharePath = 'share-preview/' . $program['slug'] . '.html';
-        $programShareUrl = $staticShareOverrides[$program['slug']] ?? (is_file(public_path($staticSharePath))
-            ? url($staticSharePath)
-            : route('program.share', ['program' => $program['slug']]));
+        $programShareUrl = $program['social_preview_url'] ?? route('program.share', ['program' => $program['slug']]);
 
         $rawHeroImage = $program['hero_image'] ?? 'logo.png';
 
