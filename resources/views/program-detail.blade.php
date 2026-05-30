@@ -233,12 +233,20 @@
         .detail-cta {
             display: flex;
             flex-wrap: wrap;
+            align-items: stretch;
             gap: 12px;
             margin-top: 30px;
         }
 
         .detail-cta .btn {
-            min-width: 180px;
+            flex: 0 0 190px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            min-height: 56px;
+            text-align: center;
+            white-space: nowrap;
         }
 
         .detail-cta .share-whatsapp-btn {
@@ -250,6 +258,17 @@
             color: #fff;
             background: #128c7e;
             border-color: #128c7e;
+        }
+
+        @media screen and (max-width: 767px) {
+            .detail-cta {
+                flex-direction: column;
+            }
+
+            .detail-cta .btn {
+                flex: 0 0 auto;
+                width: 100%;
+            }
         }
 
         .program-gallery-grid {
