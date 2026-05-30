@@ -239,17 +239,20 @@
         }
 
         .detail-cta .btn {
-            flex: 0 0 190px;
+            flex: 0 0 auto;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 0;
+            min-width: 190px;
             min-height: 56px;
+            padding-right: 28px;
+            padding-left: 28px;
             text-align: center;
             white-space: nowrap;
         }
 
         .detail-cta .share-whatsapp-btn {
+            min-width: 230px;
             color: #128c7e;
             border-color: rgba(18, 140, 126, 0.55);
         }
