@@ -125,10 +125,15 @@
             text-align: center;
         }
 
-        .donation-card .share-whatsapp-btn {
-            flex-basis: 100%;
+        .donation-card .donation-card-actions .share-whatsapp-btn {
+            flex: 1 1 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
             color: #128c7e;
             border-color: rgba(18, 140, 126, 0.55);
+            white-space: normal;
         }
 
         .donation-card .share-whatsapp-btn:hover {
@@ -145,6 +150,25 @@
             .donation-card .news-block-title,
             .donation-card .news-block-body {
                 min-height: 0;
+            }
+        }
+
+        @media screen and (max-width: 575px) {
+            .donation-card .news-block-info {
+                padding-right: 20px;
+                padding-left: 20px;
+            }
+
+            .donation-card .donation-card-actions {
+                flex-direction: column;
+            }
+
+            .donation-card .donation-card-actions .btn,
+            .donation-card .donation-card-actions .share-whatsapp-btn {
+                flex: 0 0 auto;
+                width: 100%;
+                min-height: 52px;
+                padding: 13px 18px;
             }
         }
 

@@ -1442,6 +1442,25 @@ blockquote::before {
     padding-bottom: 6px;
   }
 
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    max-width: calc(100% - 58px);
+    white-space: normal;
+  }
+
+  .navbar-brand .logo {
+    flex: 0 0 auto;
+  }
+
+  .navbar-brand span {
+    min-width: 0;
+    max-width: 100%;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
   .navbar-expand-lg .navbar-nav {
     padding-bottom: 30px;
   }
@@ -1611,6 +1630,15 @@ blockquote::before {
     font-size: 20px;
   }
 
+  .navbar-brand .logo {
+    width: 58px !important;
+    margin-right: 10px !important;
+  }
+
+  .navbar-brand span {
+    font-size: clamp(15px, 4.4vw, 18px);
+  }
+
   #hero-slide .carousel-caption {
     min-width: inherit;
     padding-bottom: 30px;
@@ -1652,4 +1680,3 @@ blockquote::before {
     padding: 25px;
   }
 }
-
