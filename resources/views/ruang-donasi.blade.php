@@ -116,6 +116,7 @@
             margin-top: auto;
             display: flex;
             flex-wrap: wrap;
+            align-items: stretch;
             gap: 10px;
         }
 
@@ -126,14 +127,17 @@
         }
 
         .donation-card .donation-card-actions .share-whatsapp-btn {
-            flex: 1 1 100%;
+            flex: 0 0 100%;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             min-width: 0;
+            width: 100%;
+            max-width: 100%;
+            min-height: 52px;
             color: #128c7e;
             border-color: rgba(18, 140, 126, 0.55);
-            white-space: normal;
+            white-space: nowrap;
         }
 
         .donation-card .share-whatsapp-btn:hover {
@@ -163,8 +167,7 @@
                 flex-direction: column;
             }
 
-            .donation-card .donation-card-actions .btn,
-            .donation-card .donation-card-actions .share-whatsapp-btn {
+            .donation-card .donation-card-actions .btn {
                 flex: 0 0 auto;
                 width: 100%;
                 min-height: 52px;
