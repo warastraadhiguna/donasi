@@ -212,21 +212,31 @@
         .program-card-actions {
             display: flex;
             flex-wrap: wrap;
+            align-items: stretch;
             gap: 10px;
             padding: 0 18px 18px;
         }
         .program-card-actions .btn {
-            flex: 1;
+            flex: 1 1 145px;
             border-radius: 999px;
             font-size: 15px;
             padding: 12px 14px;
             text-align: center;
         }
         .program-card-actions .custom-btn {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
         }
         .program-card-actions .share-whatsapp-btn {
-            flex-basis: 100%;
+            flex: 1 1 145px;
+            max-width: none;
+            min-width: 0;
+            white-space: nowrap;
+            font-size: 14px;
+            padding-right: 10px;
+            padding-left: 10px;
             color: #128c7e;
             border-color: rgba(18, 140, 126, 0.55);
         }

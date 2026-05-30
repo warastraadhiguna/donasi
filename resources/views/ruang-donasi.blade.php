@@ -127,17 +127,18 @@
         }
 
         .donation-card .donation-card-actions .share-whatsapp-btn {
-            flex: 0 0 100%;
+            flex: 1 1 145px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             min-width: 0;
-            width: 100%;
-            max-width: 100%;
             min-height: 52px;
             color: #128c7e;
             border-color: rgba(18, 140, 126, 0.55);
             white-space: nowrap;
+            font-size: 14px;
+            padding-right: 10px;
+            padding-left: 10px;
         }
 
         .donation-card .share-whatsapp-btn:hover {
