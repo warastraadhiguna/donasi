@@ -263,6 +263,24 @@
             border-color: #128c7e;
         }
 
+        @media screen and (min-width: 992px) {
+            .detail-cta {
+                flex-wrap: nowrap;
+                gap: 10px;
+            }
+
+            .detail-cta .btn {
+                min-width: 0;
+                min-height: 52px;
+                padding: 13px 18px;
+                font-size: 15px;
+            }
+
+            .detail-cta .share-whatsapp-btn {
+                min-width: 0;
+            }
+        }
+
         @media screen and (max-width: 767px) {
             .detail-cta {
                 flex-direction: column;
